@@ -41,7 +41,7 @@ public class TestService {
             );
 
             helper.setTo(email);
-            helper.setSubject("테스트 인증코드");
+            helper.setSubject("Post-IT 이메일 인증 코드: " + code);
             helper.setText(html, true);
 
             javaMailSender.send(message);
