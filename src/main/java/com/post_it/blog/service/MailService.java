@@ -2,6 +2,7 @@ package com.post_it.blog.service;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,7 +14,9 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class TestService {
+public class MailService {
+    @Value("${spring.mail.username}")
+    private String sender;
 
     private final JavaMailSender javaMailSender;
     // 인증 코드 생성 (6자리)
@@ -40,6 +43,8 @@ public class TestService {
                     message, true, StandardCharsets.UTF_8.name()
             );
 
+
+            helper.setFrom(sender ,"Post-IT");
             helper.setTo(email);
             helper.setSubject("Post-IT 이메일 인증 코드: " + code);
             helper.setText(html, true);
