@@ -210,7 +210,7 @@ function validateForm() {
     isValid = false;
   } else if (!nickRegex.test(formData.nickname)) {
     newErrors.nickname.push(
-      "4~20자의 한글, 영문, 숫자, 언더스코어로 조합해 주세요!"
+      "4~20자의 한글, 영문, 숫자, _를 사용할 수 있습니다."
     );
     isValid = false;
   }
