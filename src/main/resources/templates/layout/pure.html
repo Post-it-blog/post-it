@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POST-IT</title>
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/styles/main.css}">
+    <!-- 콘텐츠별 CSS -->
+    <link rel="stylesheet" th:if="${pageCss}" th:href="@{/styles/{file}(file=${pageCss})}">
+    <!-- 구글 폰트 CDN -->
+    <link
+            href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Noto+Sans+KR:wght@500&display=swap"
+            rel="stylesheet"
+    />
+</head>
+<body>
+<!-- 콘텐츠 -->
+<main layout:fragment="content"></main>
+</body>
+</html>

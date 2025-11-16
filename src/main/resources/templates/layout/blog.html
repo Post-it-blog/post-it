@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POST-IT</title>
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/styles/main.css}">
+    <!-- 블로그 헤더 CSS -->
+    <link rel="stylesheet" th:href="@{/styles/header_blog.css}">
+    <!-- 콘텐츠별 CSS -->
+    <link rel="stylesheet" th:if="${pageCss}" th:href="@{/styles/{file}(file=${pageCss})}">
+    <!-- 푸터 CSS -->
+    <link rel="stylesheet" th:href="@{/styles/footer.css}">
+</head>
+<body>
+<!-- 블로그 헤더 -->
+<header th:replace="~{/fragments/blog_header :: header}"></header>
+<!-- 콘텐츠 -->
+<main layout:fragment="content"></main>
+<!-- 푸터 -->
+<footer th:replace="~{/fragments/footer :: footer}"></footer>
+</body>
+</html>
