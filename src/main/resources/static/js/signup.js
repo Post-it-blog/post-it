@@ -67,24 +67,28 @@ function handleBlur(field) {
   const value = formData[field].trim();
   let errorMsg = "";
 
-  switch (field) {
-    case "username":
-      if (value && !idRegex.test(value)) {
-        errorMsg = "아이디: 5~16자의 영문 대/소문자, 숫자를 사용해 주세요.";
-      } else if (value) {
-        // 사용 불가능한 아이디 체크 (예약어)
-        const reservedIds = [
-          "admin",
-          "root",
-          "administrator",
-          "master",
-          "system",
-        ];
-        if (reservedIds.includes(value.toLowerCase())) {
-          errorMsg = "아이디: 사용할 수 없는 아이디입니다.";
-        }
+  if (field === "username") {
+      if (!idRegex.test(value)) {
+          errors.username = ["아이디: 5~16자의 영문 대/소문자, 숫자를 사용해 주세요."];
+          updateUI();
+          return;
       }
-      break;
+
+      $.post("/mem/checkId", { userId: value }, function (res) {
+          if (res === "DUPLICATE") {
+              errors.username = ["아이디: 사용할 수 없는 아이디입니다."];
+          } else {
+              errors.username = [];
+          }
+          updateUI();
+      }).fail(function () {
+          errors.username = ["서버와 통신 중 오류가 발생했습니다."];
+          updateUI();
+      });
+      return;
+  }
+
+  switch (field) {
     case "password":
       if (value && !pwdRegex.test(value)) {
         errorMsg =
@@ -112,7 +116,6 @@ function handleBlur(field) {
       if (value && !emailRegex.test(value)) {
         errorMsg = "이메일: 올바른 이메일 형식으로 입력해 주세요.";
       } else if (value) {
-        // 사용 불가능한 이메일 체크 (예약어)
         const reservedEmails = ["admin@example.com", "test@example.com"];
         if (reservedEmails.includes(value.toLowerCase())) {
           errorMsg = "이메일: 사용할 수 없는 이메일입니다.";

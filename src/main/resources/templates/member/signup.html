@@ -1,0 +1,115 @@
+<main layout:fragment="content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/pure}">
+
+    <div class="signup-container" data-name="회원가입">
+        <!-- 로고 -->
+        <header class="logo" id="logo" data-name="LOGO">
+            <div class="logo-text">POSTit</div>
+        </header>
+
+        <!-- 아이디, 비밀번호, 확인 -->
+        <div class="form-group first-group" data-name="아이디, 비밀번호, 확인">
+            <div class="form-frame">
+                <div class="frame-border"></div>
+            </div>
+            <div class="divider divider-1"></div>
+            <div class="divider divider-2"></div>
+
+            <!-- 아이디 -->
+            <div class="icon user-icon icon-1">
+                <img src="/images/user-icon.png" alt="유저 아이콘" />
+            </div>
+            <input type="text" id="username" class="input-field username-field"
+                   placeholder="아이디" tabindex="1" />
+
+            <!-- 비밀번호 -->
+            <div class="icon password-icon icon-2">
+                <img src="/images/password-icon.png" alt="비밀번호 아이콘" />
+            </div>
+            <input type="password" id="password" class="input-field password-field"
+                   placeholder="비밀번호" tabindex="2" />
+
+            <!-- 비밀번호 확인 -->
+            <div class="icon password-icon icon-3">
+                <img src="/images/password-icon.png" alt="비밀번호 아이콘" />
+            </div>
+            <input type="password" id="passwordConfirm"
+                   class="input-field password-confirm-field"
+                   placeholder="비밀번호 확인" tabindex="3" />
+        </div>
+
+        <!-- 첫 번째 그룹 에러 메시지 -->
+        <div class="error-message first-error" id="firstError"></div>
+
+        <!-- 이름, 닉네임 -->
+        <div class="form-group second-group" id="secondGroup" data-name="이름, 닉네임">
+            <div class="form-frame frame-100">
+                <div class="frame-border"></div>
+            </div>
+            <div class="divider divider-middle"></div>
+
+            <!-- 이름 -->
+            <div class="icon user-icon icon-name">
+                <img src="/images/user-icon.png" alt="유저 아이콘" />
+            </div>
+            <input type="text" id="name" class="input-field name-field"
+                   placeholder="이름" tabindex="4" />
+
+            <!-- 닉네임 -->
+            <div class="icon user-icon icon-nickname">
+                <img src="/images/user-icon.png" alt="유저 아이콘" />
+            </div>
+            <input type="text" id="nickname" class="input-field nickname-field"
+                   placeholder="닉네임" tabindex="5" />
+        </div>
+
+        <!-- 두 번째 그룹 에러 메시지 -->
+        <div class="error-message second-error" id="secondError"></div>
+
+        <!-- 이메일, 인증번호 -->
+        <div class="form-group third-group" id="thirdGroup" data-name="이메일">
+            <div class="form-frame frame-email" id="emailFrame">
+                <div class="frame-border frame-border-email"></div>
+            </div>
+
+            <div class="divider divider-email" id="emailDivider" style="display: none"></div>
+
+            <!-- 이메일 -->
+            <div class="icon email-icon">
+                <img src="/images/email-icon.png" alt="이메일 아이콘" />
+            </div>
+            <input type="email" id="email" class="input-field email-field"
+                   placeholder="이메일" tabindex="6" />
+
+            <!-- 인증번호 전송 -->
+            <button type="button" class="send-code-btn" id="sendCodeBtn" tabindex="-1">
+                <div class="btn-border"></div>
+                <span class="btn-text" id="sendCodeText">인증번호 전송</span>
+            </button>
+
+            <!-- 인증번호 입력 -->
+            <div class="verification-group" id="verificationGroup" style="display: none">
+                <div class="icon verification-icon">
+                    <img src="/images/verification-icon.png" alt="인증번호 아이콘" />
+                </div>
+                <input type="text" id="verificationCode"
+                       class="input-field verification-field"
+                       placeholder="인증번호" tabindex="7" />
+            </div>
+        </div>
+
+        <!-- 세 번째 그룹 에러 메시지 -->
+        <div class="error-message third-error" id="thirdError"></div>
+
+        <!-- 회원가입 버튼 -->
+        <div class="submit-button-wrapper" id="submitButton" data-name="회원가입 버튼">
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <div class="submit-btn-border"></div>
+                <span class="submit-btn-text">회원가입</span>
+            </button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/signup.js"></script>
+</main>
