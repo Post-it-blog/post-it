@@ -2,6 +2,8 @@ package com.post_it.blog.controller;
 
 import com.post_it.blog.dto.common.VerifyCode;
 import com.post_it.blog.service.MailService;
+import com.post_it.blog.service.MemberService;
+import com.post_it.blog.validation.Validation;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,17 +15,25 @@ import org.springframework.web.bind.annotation.*;
 public class MailController {
 
     private final MailService mailService;
+    private final MemberService memberService;
 
     // 인증코드 보내기
     @PostMapping("/send")
     @ResponseBody
     public String send(@RequestParam String email,
                        HttpSession session) {
+        if (!Validation.emailCheck(email)) {
+            return "FAIL";
+        }
+        if (memberService.isEmailAvailable(email)) {
+            return "DUPLICATE";
+        }
+
         Long lastReq = (Long) session.getAttribute("lastEmailReq");
 
         long now = System.currentTimeMillis();
 
-        if (lastReq != null && (now - lastReq) < 30000) { // 30초
+        if (lastReq != null && (now - lastReq) < 20000) { // 20초
             return "TOO_FAST";
         }
 
@@ -33,7 +43,7 @@ public class MailController {
         VerifyCode verifyCode = new VerifyCode(code, now);
 
         session.setAttribute("verifyCode", verifyCode);
-
+        session.setAttribute("temporary_email", email);
         mailService.sendVerifyMail(email, code);
 
         return "OK";
@@ -42,9 +52,14 @@ public class MailController {
     // 인증코드 확인
     @PostMapping("/check")
     @ResponseBody
-    public String check(@RequestParam String code,
+    public String check(@RequestParam String code, @RequestParam String email,
                         HttpSession session) {
-
+        System.out.println(code);
+        System.out.println(email);
+        if (session.getAttribute("temporary_email") != null && !session.getAttribute("temporary_email").equals(email)) {
+            return "NOT_MATCHED_EMAIL";
+        }
+        session.removeAttribute("temporary_email");
         VerifyCode verifyCode = (VerifyCode) session.getAttribute("verifyCode");
         if (verifyCode == null) return "FAIL";
 
@@ -58,6 +73,7 @@ public class MailController {
             return "FAIL";
         }
 
+        session.setAttribute("user_email", email);
         session.setAttribute("emailAuthStatus", "OK");
         session.setAttribute("emailAuthExpireAt", System.currentTimeMillis() + 180000); // 3분
         return "OK";

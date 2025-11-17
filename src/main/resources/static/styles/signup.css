@@ -1,3 +1,4 @@
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -5,429 +6,530 @@
 }
 
 body {
-  background-color: white;
+  font-family: "Noto Sans KR", sans-serif;
+  background: #ffffff;
   width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 0;
 }
 
-.signup-container {
-  background-color: white;
-  position: relative;
+/* 메인 컨테이너 */
+.signup-page {
   width: 100%;
-  min-height: 100vh;
+  min-height: 900px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* 로고 */
-.logo {
+.logo-container {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 98px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
+  left: 50%;
+  top: 70px;
+  transform: translateX(-50%);
+  width: 250px;
+  height: 52px;
 }
 
-.logo-text {
-  font-family: "Rubik Bubbles", cursive;
-  font-size: 64px;
-  color: black;
-  text-align: center;
-  letter-spacing: 16px;
-  text-transform: uppercase;
-  line-height: 51px;
-}
-
-/* 공통 폼 그룹 스타일 */
-.form-group {
-  position: absolute;
-  left: calc(50% - 245px);
-  transition: all 0.3s ease;
-}
-
-.first-group {
-  top: 174px;
-}
-
-.form-frame {
-  position: absolute;
-  background-color: white;
-  border-radius: 10px;
-  opacity: 0.5;
-  width: 490px;
-  height: 150px;
-  top: 0;
-  left: 0;
-}
-
-.frame-100 {
-  height: 100px;
-}
-
-.frame-email {
-  height: 50px;
-  transition: height 0.3s ease;
-}
-
-.frame-email.expanded {
-  height: 100px;
-}
-
-.frame-border {
-  position: absolute;
-  border: 1px solid #6e6e6e;
-  border-radius: 10px;
-  inset: 0;
-  pointer-events: none;
-}
-
-.frame-border-email {
-  border-color: rgba(110, 110, 110, 0.5);
-}
-
-/* 구분선 */
-.divider {
-  position: absolute;
-  height: 0;
-  width: 490px;
-  left: 0;
-}
-
-.divider::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: -1px;
-  height: 1px;
-  background-color: #6e6e6e;
-  opacity: 0.5;
-}
-
-.divider-1 {
-  top: 50px;
-}
-
-.divider-2 {
-  top: 100px;
-}
-
-.divider-middle {
-  top: 50px;
-}
-
-.divider-email {
-  top: 50px;
-  display: none;
-  transition: opacity 0.3s ease;
-}
-
-.divider-email.visible {
-  display: block;
-}
-
-/* 아이콘 */
-.icon {
-  position: absolute;
-  width: 25px;
-  height: 25px;
-}
-
-.icon img {
+.logo-image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 50%;
   pointer-events: none;
 }
 
-.icon-1 {
-  left: 19px;
-  top: 12px;
-}
-
-.icon-2 {
-  left: 19px;
-  top: 63px;
-}
-
-.icon-3 {
-  left: 19px;
-  top: 112px;
-}
-
-.icon-name {
-  left: 19px;
-  top: 12px;
-}
-
-.icon-nickname {
-  left: 19px;
-  top: 63px;
-}
-
-.email-icon {
-  left: 19px;
-  top: 12px;
-}
-
-.verification-icon {
-  left: 19px;
-  top: 62px;
-}
-
-/* 입력 필드 */
-.input-field {
+/* 폼 섹션 공통 스타일 */
+.form-section {
   position: absolute;
+  background: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* 첫 번째 섹션 - 아이디, 비밀번호, 비밀번호 확인 */
+.section-1 {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 184px;
+  width: 539px;
+  height: 199px;
+}
+
+/* 두 번째 섹션 - 이름, 닉네임 */
+.section-2 {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 417px;
+  width: 539px;
+  height: 135px;
+}
+
+/* 세 번째 섹션 - 이메일, 인증번호 */
+.section-3 {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 586px;
+  width: 539px;
+  height: 68px;
+  transition: height 0.3s ease;
+}
+
+.section-3.expanded {
+  height: 135px;
+}
+
+/* 라벨 박스 공통 스타일 */
+.label-box {
+  position: absolute;
+  width: 128px;
+  height: 45px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.label-text {
   font-family: "Noto Sans KR", sans-serif;
   font-weight: 500;
-  justify-content: center;
-  line-height: 0;
-  opacity: 0.5;
   font-size: 15px;
-  color: black;
+  color: #000000;
   letter-spacing: 1.5px;
-  transform: translateY(-50%);
-  background-color: transparent;
+  text-align: center;
+  line-height: 0;
+}
+
+/* 입력 필드 공통 스타일 */
+.input-field {
+  position: absolute;
+  width: 360px;
+  height: 45px;
+  background: #ffffff;
   border: none;
   outline: none;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15) inset;
+  padding: 0 14px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #000000;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
 }
 
 .input-field::placeholder {
-  opacity: 0.5;
-  color: black;
+  color: #a2a2a2;
+  font-weight: 500;
 }
 
-.username-field {
-  left: 62px;
-  top: 25px;
-  width: 396px;
-  height: 20px;
+/* 첫 번째 섹션 - 아이디 */
+.label-id {
+  left: 15px;
+  top: 13px;
 }
 
-.password-field {
-  left: 62px;
-  top: 75.5px;
-  width: 396px;
-  height: 25px;
+.input-id {
+  left: 155px;
+  top: 13px;
 }
 
-.password-confirm-field {
-  left: 62px;
-  top: 125px;
-  width: 396px;
-  height: 20px;
+/* 첫 번째 섹션 - 비밀번호 */
+.label-password {
+  left: 15px;
+  top: 78px;
 }
 
-.name-field {
-  left: 67px;
-  top: 25px;
-  width: 397px;
-  height: 24px;
+.input-password {
+  left: 155px;
+  top: 78px;
 }
 
-.nickname-field {
-  left: 67px;
-  top: 75px;
-  width: 396px;
-  height: 20px;
+/* 첫 번째 섹션 - 비밀번호 확인 */
+.label-password-confirm {
+  left: 15px;
+  top: 141px;
 }
 
-.email-field {
-  left: 67px;
-  top: 25px;
-  width: 249px;
-  height: 20px;
+.input-password-confirm {
+  left: 155px;
+  top: 142px;
 }
 
-.verification-field {
-  left: 67px;
-  top: 75px;
-  width: 396px;
-  height: 18px;
+/* 두 번째 섹션 - 이름 */
+.label-name {
+  left: 15px;
+  top: 13px;
+}
+
+.input-name {
+  left: 155px;
+  top: 13px;
+}
+
+/* 두 번째 섹션 - 닉네임 */
+.label-nickname {
+  left: 15px;
+  top: 78px;
+}
+
+.input-nickname {
+  left: 155px;
+  top: 78px;
+}
+
+/* 세 번째 섹션 - 이메일 */
+.label-email {
+  left: 15px;
+  top: 13px;
+}
+
+.input-email {
+  left: 155px;
+  top: 13px;
+}
+
+/* 세 번째 섹션 - 인증번호 */
+.label-verification {
+  left: 15px;
+  top: 78px;
+}
+
+.input-verification {
+  left: 155px;
+  top: 78px;
+}
+
+/* 액션 버튼 공통 스타일 */
+.action-btn {
+  position: absolute;
+  width: 101px;
+  height: 33px;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.action-btn:active {
+  transform: translateY(0);
 }
 
 /* 인증번호 전송 버튼 */
-.send-code-btn {
-  position: absolute;
-  background-color: #c9c9c9;
-  height: 33px;
-  width: 110px;
-  left: 371px;
-  top: 9px;
-  opacity: 0.9;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
+.btn-send-code {
+  left: 409.35px;
+  top: 19px;
+  background: #4e6a9a;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3), 1px 1px 2px 0px #aabfe4 inset;
 }
 
-.send-code-btn:hover {
-  opacity: 1;
+.btn-send-code .btn-text {
+  color: #ffffff;
 }
 
-.btn-border {
-  position: absolute;
-  border: 1px solid rgba(110, 110, 110, 0.5);
-  border-radius: 10px;
-  inset: 0;
-  pointer-events: none;
+/* 인증번호 확인 버튼 */
+.btn-verify-code {
+  left: 409.35px;
+  top: 84px;
+  background: #ffffff;
+}
+
+.btn-verify-code .btn-text {
+  color: #4c6794;
 }
 
 .btn-text {
-  position: relative;
   font-family: "Noto Sans KR", sans-serif;
   font-weight: 500;
-  font-size: 15px;
-  color: black;
+  font-size: 12px;
+  letter-spacing: 1.2px;
   text-align: center;
-  letter-spacing: 1.5px;
-  line-height: 20px;
-  z-index: 1;
-}
-
-/* 인증번호 그룹 */
-.verification-group {
-  transition: opacity 0.3s ease;
+  line-height: 0;
 }
 
 /* 에러 메시지 */
-.error-message {
+.error-message-container {
   position: absolute;
-  font-size: 12px;
-  color: #ff4444;
-  line-height: 1.2;
-  white-space: nowrap;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 539px;
+  padding: 10px 20px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
   transition: all 0.3s ease;
-  display: none;
 }
 
-.first-error {
-  left: calc(50% - 226px);
-  top: 334px;
-  line-height: 1.4;
-  width: 490px;
-  white-space: normal;
+.error-message-container.visible {
+  opacity: 1;
+  max-height: 200px;
 }
 
-.second-error {
-  left: calc(50% - 225px);
+#firstError {
+  top: 398px;
 }
 
-.third-error {
-  left: calc(50% - 225px);
+#secondError {
+  top: 567px;
 }
 
-.error-message.visible {
-  display: block;
+#thirdError {
+  top: 736px;
+}
+
+.error-message-container > div {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #ff4444;
+  line-height: 20px;
+  margin-bottom: 5px;
+}
+
+.error-message-container > div:last-child {
+  margin-bottom: 0;
+}
+
+.success-message {
+  color: #4e6a9a !important;
 }
 
 /* 회원가입 버튼 */
-.submit-button-wrapper {
+.submit-button-container {
   position: absolute;
-  height: 56px;
-  width: 490px;
-  left: calc(50% + 1px);
+  left: calc(50% + 0.5px);
+  top: 764px;
   transform: translateX(-50%);
-  opacity: 0.9;
-  transition: all 0.3s ease;
+  width: 539px;
+  height: 56px;
 }
 
 .submit-btn {
   position: absolute;
-  background-color: #888888;
-  inset: 0;
-  opacity: 0.5;
-  border-radius: 10px;
   width: 100%;
   height: 100%;
+  background: #4e6a9a;
   border: none;
+  border-radius: 30px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  transition: opacity 0.3s ease;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.submit-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  border-radius: 30px;
 }
 
 .submit-btn:hover {
-  opacity: 0.7;
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.3);
 }
 
-.submit-btn-border {
-  position: absolute;
-  border: 1px solid #6e6e6e;
-  border-radius: 10px;
-  inset: 0;
-  pointer-events: none;
+.submit-btn:active {
+  transform: translateY(0);
 }
 
 .submit-btn-text {
   position: absolute;
+  inset: 17.86% 9.27% 17.86% 9.09%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-family: "Noto Sans KR", sans-serif;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 20px;
-  color: black;
+  color: #ffffff;
   text-align: center;
   letter-spacing: 2px;
-  line-height: 20px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+  line-height: 0;
 }
 
-/* 모바일 반응형 (max-width: 480px) */
-@media (max-width: 480px) {
-  .signup-container {
-    padding: 0 10px;
+/* 반응형 디자인 */
+@media screen and (max-width: 1024px) {
+  .signup-page {
+    width: 100%;
   }
 
-  /* 로고 크기 축소 */
-  .logo-text {
-    font-size: 42px;
-    letter-spacing: 10px;
-    line-height: 34px;
-  }
-
-  /* 폼 그룹 너비 조정 */
-  .form-group {
-    left: calc(50% - 160px);
-    transform: scale(0.653);
-    transform-origin: top left;
-  }
-
-  .form-frame,
-  .divider {
-    width: 490px;
-  }
-
-  /* 에러 메시지 조정 */
-  .first-error {
-    left: calc(50% - 160px);
-    transform: scale(0.653);
-    transform-origin: top left;
-    width: 490px;
-  }
-
-  .second-error,
-  .third-error {
-    left: calc(50% - 160px);
-    transform: scale(0.653);
-    transform-origin: top left;
-    width: 490px;
-  }
-
-  /* 회원가입 버튼 조정 */
-  .submit-button-wrapper {
-    width: 320px;
+  .form-section,
+  .error-message-container,
+  .submit-button-container {
     left: 50%;
+    transform: translateX(-50%);
   }
 
-  .submit-btn-text {
-    font-size: 16px;
-    letter-spacing: 1.5px;
+  .submit-button-container {
+    transform: translate(-50%, 0);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .logo-container {
+    top: 40px;
+    width: 200px;
+    height: 42px;
+  }
+
+  .form-section,
+  .error-message-container,
+  .submit-button-container {
+    width: calc(100% - 40px);
+    max-width: 500px;
+  }
+
+  .section-1 {
+    top: 120px;
+  }
+
+  .section-2 {
+    top: 353px;
+  }
+
+  .section-3 {
+    top: 522px;
+  }
+
+  #firstError {
+    top: 334px;
+  }
+
+  #secondError {
+    top: 503px;
+  }
+
+  #thirdError {
+    top: 672px;
+  }
+
+  .submit-button-container {
+    top: 700px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .label-box,
+  .input-field {
+    width: calc(100% - 30px);
+    left: 15px !important;
+  }
+
+  .input-field {
+    width: calc(100% - 30px);
+  }
+
+  .label-id {
+    top: 13px;
+  }
+  .input-id {
+    top: 68px;
+  }
+
+  .label-password {
+    top: 123px;
+  }
+  .input-password {
+    top: 178px;
+  }
+
+  .label-password-confirm {
+    top: 233px;
+  }
+  .input-password-confirm {
+    top: 288px;
+  }
+
+  .section-1 {
+    height: 343px;
+  }
+
+  .label-name {
+    top: 13px;
+  }
+  .input-name {
+    top: 68px;
+  }
+
+  .label-nickname {
+    top: 123px;
+  }
+  .input-nickname {
+    top: 178px;
+  }
+
+  .section-2 {
+    height: 223px;
+    top: 493px;
+  }
+
+  .label-email {
+    top: 13px;
+  }
+  .input-email {
+    top: 68px;
+  }
+
+  .label-verification {
+    top: 123px;
+  }
+  .input-verification {
+    top: 178px;
+  }
+
+  .section-3 {
+    height: 223px;
+    top: 742px;
+  }
+
+  .action-btn {
+    left: 15px !important;
+    width: calc(100% - 30px);
+  }
+
+  .btn-send-code {
+    top: 113px;
+  }
+
+  .btn-verify-code {
+    top: 223px;
+  }
+
+  #firstError {
+    top: 546px;
+  }
+
+  #secondError {
+    top: 726px;
+  }
+
+  #thirdError {
+    top: 975px;
+  }
+
+  .submit-button-container {
+    top: 1000px;
   }
 }

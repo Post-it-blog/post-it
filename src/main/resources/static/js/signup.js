@@ -30,7 +30,7 @@ let errors = {
 
 // 인증번호 전송 상태
 let isCodeSent = false;
-let isEmailVerified = false; // 이메일 인증 완료 여부
+let isEmailVerified = false;
 
 // DOM 요소
 const usernameInput = document.getElementById("username");
@@ -46,16 +46,15 @@ const secondErrorDiv = document.getElementById("secondError");
 const thirdErrorDiv = document.getElementById("thirdError");
 
 const sendCodeBtn = document.getElementById("sendCodeBtn");
-const sendCodeText = document.getElementById("sendCodeText");
-const verificationGroup = document.getElementById("verificationGroup");
-const emailFrame = document.getElementById("emailFrame");
-const emailDivider = document.getElementById("emailDivider");
-
+const verifyCodeBtn = document.getElementById("verifyCodeBtn");
 const submitBtn = document.getElementById("submitBtn");
-const logo = document.getElementById("logo");
-const secondGroup = document.getElementById("secondGroup");
-const thirdGroup = document.getElementById("thirdGroup");
-const submitButton = document.getElementById("submitButton");
+
+const section2 = document.querySelector(".section-2");
+const section3 = document.querySelector(".section-3");
+const submitButtonContainer = document.querySelector(
+  ".submit-button-container"
+);
+const labelVerification = document.getElementById("labelVerification");
 
 // 입력 변경 핸들러
 function handleInputChange(field, value) {
@@ -68,24 +67,53 @@ function handleBlur(field) {
   let errorMsg = "";
 
   if (field === "username") {
-      if (!idRegex.test(value)) {
-          errors.username = ["아이디: 5~16자의 영문 대/소문자, 숫자를 사용해 주세요."];
-          updateUI();
-          return;
-      }
-
-      $.post("/mem/checkId", { userId: value }, function (res) {
-          if (res === "DUPLICATE") {
-              errors.username = ["아이디: 사용할 수 없는 아이디입니다."];
-          } else {
-              errors.username = [];
-          }
-          updateUI();
-      }).fail(function () {
-          errors.username = ["서버와 통신 중 오류가 발생했습니다."];
-          updateUI();
-      });
+    if (!idRegex.test(value)) {
+      errors.username = [
+        "아이디: 5~16자의 영문 대/소문자, 숫자를 사용해 주세요.",
+      ];
+      updateUI();
       return;
+    }
+
+    $.post("/mem/checkId", { userId: value }, function (res) {
+      if (res === "DUPLICATE") {
+        errors.username = ["아이디: 사용할 수 없는 아이디입니다."];
+      } else {
+        errors.username = [];
+      }
+      updateUI();
+    }).fail(function () {
+      errors.username = ["서버와 통신 중 오류가 발생했습니다."];
+      updateUI();
+    });
+    return;
+  }
+
+  if (field === "nickname") {
+    if (!nickRegex.test(value)) {
+      errors.nickname = [
+        "닉네임: 4~20자의 한글, 영문 대/소문자를 사용해 주세요. (사용 가능한 특수문자 -, _)",
+      ];
+      updateUI();
+      return;
+    }
+
+    $.post("/mem/checkNick", { nickname: value }, function (res) {
+      if (res === "FAIL") {
+        errors.nickname = [
+          "닉네임: 4~20자의 한글, 영문 대/소문자를 사용해 주세요. (사용 가능한 특수문자 -, _)",
+        ];
+      } else if (res === "DUPLICATE") {
+        errors.nickname = ["이미 사용 중인 닉네임입니다."];
+      } else {
+        errors.nickname = [];
+      }
+      updateUI();
+    }).fail(function () {
+      errors.nickname = ["서버와 통신 중 오류가 발생했습니다."];
+      updateUI();
+    });
+    return;
   }
 
   switch (field) {
@@ -104,22 +132,6 @@ function handleBlur(field) {
       if (value && !nameRegex.test(value)) {
         errorMsg =
           "이름: 한글, 영문 대/소문자를 사용해 주세요. (특수기호, 공백 사용 불가)";
-      }
-      break;
-    case "nickname":
-      if (value && !nickRegex.test(value)) {
-        errorMsg =
-          "닉네임: 4~20자의 한글, 영문 대/소문자를 사용해 주세요. (사용 가능한 특수문자 -, _)";
-      }
-      break;
-    case "email":
-      if (value && !emailRegex.test(value)) {
-        errorMsg = "이메일: 올바른 이메일 형식으로 입력해 주세요.";
-      } else if (value) {
-        const reservedEmails = ["admin@example.com", "test@example.com"];
-        if (reservedEmails.includes(value.toLowerCase())) {
-          errorMsg = "이메일: 사용할 수 없는 이메일입니다.";
-        }
       }
       break;
   }
@@ -145,14 +157,70 @@ function handleSendCode() {
   }
 
   errors.email = [];
-  isCodeSent = true;
-  isEmailVerified = true; // 인증번호 전송 시 인증 완료로 간주 (실제로는 인증번호 확인 로직 필요)
-  sendCodeText.textContent = "재전송";
-  verificationGroup.style.display = "block";
-  emailFrame.classList.add("expanded");
-  emailDivider.classList.add("visible");
-  emailDivider.style.display = "block";
-  updateUI();
+
+  $.post("/api/email/send", { email: email }, function (res) {
+    if (res === "TOO_FAST") {
+      errors.email = ["잠시 후 다시 시도해주세요."];
+    } else if (res === "DUPLICATE") {
+      errors.email = ["사용할 수 없는 이메일입니다."];
+      updateUI();
+      return;
+    } else if (res === "FAIL") {
+      errors.email = ["유효하지 않은 이메일 형식입니다."];
+      updateUI();
+      return;
+    } else {
+      errors.email = [
+        '<span class="success-message">인증코드가 이메일로 전송되었습니다.</span>',
+      ];
+      isCodeSent = true;
+      sendCodeBtn.querySelector(".btn-text").textContent = "재전송";
+    }
+    updateUI();
+  }).fail(function () {
+    errors.email = ["서버와 통신 중 오류가 발생했습니다."];
+    updateUI();
+  });
+}
+
+// 인증번호 확인 핸들러
+function handleVerifyCode() {
+  const code = formData.verificationCode.trim();
+
+  if (!code) {
+    errors.email = ["인증코드를 입력해주세요."];
+    updateUI();
+    return;
+  }
+
+  $.post(
+    "/api/email/check",
+    { code: code, email: formData.email },
+    function (res) {
+      if (res === "FAIL") {
+        errors.email = ["인증코드가 일치하지 않습니다."];
+      } else if (res === "TIMEOUT") {
+        errors.email = [
+          "세션이 만료 되었습니다. 이메일 인증을 다시 시도해주세요.",
+        ];
+        updateUI();
+        return;
+      } else if (res === "NOT_MATCHED_EMAIL") {
+        errors.email = [
+          "이메일이 일치하지 않습니다. 이메일 인증을 다시 시도해주세요.",
+        ];
+      } else {
+        errors.email = [
+          '<span class="success-message">이메일 인증이 완료 되었습니다.</span>',
+        ];
+        isEmailVerified = true;
+      }
+      updateUI();
+    }
+  ).fail(function () {
+    errors.email = ["서버와 통신 중 오류가 발생했습니다."];
+    updateUI();
+  });
 }
 
 // 폼 검증
@@ -174,6 +242,9 @@ function validateForm() {
     isValid = false;
   } else if (!idRegex.test(formData.username)) {
     newErrors.username.push("5~16자의 영문자, 숫자로 조합해 주세요!");
+    isValid = false;
+  } else if (errors.username.length > 0) {
+    newErrors.username = [...errors.username];
     isValid = false;
   }
 
@@ -213,6 +284,9 @@ function validateForm() {
       "4~20자의 한글, 영문, 숫자, _를 사용할 수 있습니다."
     );
     isValid = false;
+  } else if (errors.nickname.length > 0) {
+    newErrors.nickname = [...errors.nickname];
+    isValid = false;
   }
 
   // 이메일 검증
@@ -223,12 +297,12 @@ function validateForm() {
     newErrors.email.push("올바른 이메일 형식으로 입력해 주세요!");
     isValid = false;
   } else if (!isEmailVerified) {
-    newErrors.email.push("이메일 인증이 완료되지 않았습니다.");
+    newErrors.email.push("이메일 인증이 완료되지 않았습니다!");
     isValid = false;
   }
 
   // 인증번호 검증
-  if (isCodeSent) {
+  if (isCodeSent && !isEmailVerified) {
     if (!formData.verificationCode.trim()) {
       newErrors.verificationCode.push("인증번호를 입력해주세요!");
       isValid = false;
@@ -248,55 +322,38 @@ function handleSubmit(e) {
   e.preventDefault();
 
   if (validateForm()) {
-    console.log("회원가입 데이터:", formData);
-    alert("회원가입이 완료되었습니다!");
-
-    // 폼 초기화
-    formData = {
-      username: "",
-      password: "",
-      passwordConfirm: "",
-      name: "",
-      nickname: "",
-      email: "",
-      verificationCode: "",
+    const dataToSend = {
+      userId: formData.username,
+      password: formData.password,
+      name: formData.name,
+      nickname: formData.nickname,
+      email: formData.email,
     };
 
-    usernameInput.value = "";
-    passwordInput.value = "";
-    passwordConfirmInput.value = "";
-    nameInput.value = "";
-    nicknameInput.value = "";
-    emailInput.value = "";
-    verificationCodeInput.value = "";
+    $.ajax({
+      url: "/mem/signup",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(dataToSend),
 
-    isCodeSent = false;
-    isEmailVerified = false;
-    sendCodeText.textContent = "인증번호 전송";
-    verificationGroup.style.display = "none";
-    emailFrame.classList.remove("expanded");
-    emailDivider.classList.remove("visible");
-    emailDivider.style.display = "none";
-
-    errors = {
-      username: [],
-      password: [],
-      passwordConfirm: [],
-      name: [],
-      nickname: [],
-      email: [],
-      verificationCode: [],
-    };
-
-    updateUI();
+      success: function (res) {
+        if (res === "SUCCESS") {
+          window.location.href = "/mem/welcome";
+        } else if (res === "FAIL") {
+          errors.email = ["잘못된 접근입니다."];
+          updateUI();
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error("AJAX ERROR: ", textStatus, errorThrown);
+        alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+      },
+    });
   }
 }
 
 // UI 업데이트
 function updateUI() {
-  // 모바일 여부 확인
-  const isMobile = window.innerWidth <= 480;
-
   // 에러 메시지 그룹별 수집
   const firstGroupErrors = [
     ...errors.username,
@@ -314,7 +371,7 @@ function updateUI() {
       .join("");
   } else {
     firstErrorDiv.classList.remove("visible");
-    firstErrorDiv.textContent = "";
+    firstErrorDiv.innerHTML = "";
   }
 
   // 두 번째 그룹 에러 메시지 표시
@@ -325,7 +382,7 @@ function updateUI() {
       .join("");
   } else {
     secondErrorDiv.classList.remove("visible");
-    secondErrorDiv.textContent = "";
+    secondErrorDiv.innerHTML = "";
   }
 
   // 세 번째 그룹 에러 메시지 표시
@@ -336,59 +393,47 @@ function updateUI() {
       .join("");
   } else {
     thirdErrorDiv.classList.remove("visible");
-    thirdErrorDiv.textContent = "";
+    thirdErrorDiv.innerHTML = "";
   }
 
-  // 에러 메시지 높이 계산 (각 에러 메시지 20px)
-  const firstErrorHeight =
-    firstGroupErrors.length > 0 ? firstGroupErrors.length * 20 : 0;
-  const secondErrorHeight =
-    secondGroupErrors.length > 0 ? secondGroupErrors.length * 20 : 0;
-  const thirdErrorHeight =
-    thirdGroupErrors.length > 0 ? thirdGroupErrors.length * 20 : 0;
-
-  // 각 그룹의 동적 위치 계산 (모바일/데스크탑 구분)
-  if (isMobile) {
-    const scale = 0.653;
-    const firstGroupTop = 174;
-    const logoTop = firstGroupTop - 25 - 51;
-    const firstErrorTop = firstGroupTop + 150 * scale;
-    const secondGroupTop =
-      firstGroupTop + 150 * scale + firstErrorHeight * scale + 15;
-    const thirdGroupTop =
-      secondGroupTop + 100 * scale + secondErrorHeight * scale + 15;
-    const buttonTop =
-      thirdGroupTop +
-      (isCodeSent ? 100 : 50) * scale +
-      thirdErrorHeight * scale +
-      15;
-
-    // 위치 업데이트
-    logo.style.top = `${logoTop}px`;
-    firstErrorDiv.style.top = `${firstErrorTop}px`;
-    secondGroup.style.top = `${secondGroupTop}px`;
-    secondErrorDiv.style.top = `${secondGroupTop + 100 * scale}px`;
-    thirdGroup.style.top = `${thirdGroupTop}px`;
-    thirdErrorDiv.style.top = `${
-      thirdGroupTop + (isCodeSent ? 100 : 50) * scale
-    }px`;
-    submitButton.style.top = `${buttonTop}px`;
+  // 인증번호 필드 표시/숨김
+  if (isCodeSent) {
+    labelVerification.style.display = "flex";
+    verificationCodeInput.style.display = "flex";
+    verifyCodeBtn.style.display = "block";
+    section3.classList.add("expanded");
   } else {
-    const firstGroupTop = 174;
-    const logoTop = firstGroupTop - 25 - 51;
-    const secondGroupTop = firstGroupTop + 150 + firstErrorHeight + 20;
-    const thirdGroupTop = secondGroupTop + 100 + secondErrorHeight + 20;
-    const buttonTop =
-      thirdGroupTop + (isCodeSent ? 100 : 50) + thirdErrorHeight + 20;
-
-    // 위치 업데이트
-    logo.style.top = `${logoTop}px`;
-    secondGroup.style.top = `${secondGroupTop}px`;
-    secondErrorDiv.style.top = `${secondGroupTop + 110}px`;
-    thirdGroup.style.top = `${thirdGroupTop}px`;
-    thirdErrorDiv.style.top = `${thirdGroupTop + (isCodeSent ? 110 : 60)}px`;
-    submitButton.style.top = `${buttonTop}px`;
+    labelVerification.style.display = "none";
+    verificationCodeInput.style.display = "none";
+    verifyCodeBtn.style.display = "none";
+    section3.classList.remove("expanded");
   }
+
+  // 에러 메시지 높이 계산 (각 에러 메시지 25px)
+  const firstErrorHeight =
+    firstGroupErrors.length > 0 ? firstGroupErrors.length * 25 + 20 : 0;
+  const secondErrorHeight =
+    secondGroupErrors.length > 0 ? secondGroupErrors.length * 25 + 20 : 0;
+  const thirdErrorHeight =
+    thirdGroupErrors.length > 0 ? thirdGroupErrors.length * 25 + 20 : 0;
+
+  // section-3의 현재 높이
+  const section3Height = isCodeSent ? 135 : 68;
+
+  // 섹션 위치 동적 조정
+  const section2Top = 417 + firstErrorHeight;
+  const section3Top = section2Top + 135 + 34 + secondErrorHeight;
+  const submitTop = section3Top + section3Height + 43 + thirdErrorHeight;
+
+  section2.style.top = `${section2Top}px`;
+  section2.style.left = "50%";
+  section2.style.transform = "translateX(-50%)";
+  secondErrorDiv.style.top = `${section2Top + 135 + 15}px`;
+  section3.style.top = `${section3Top}px`;
+  section3.style.left = "50%";
+  section3.style.transform = "translateX(-50%)";
+  thirdErrorDiv.style.top = `${section3Top + section3Height + 15}px`;
+  submitButtonContainer.style.top = `${submitTop}px`;
 }
 
 // 이벤트 리스너 등록
@@ -432,6 +477,7 @@ verificationCodeInput.addEventListener("blur", () =>
 );
 
 sendCodeBtn.addEventListener("click", handleSendCode);
+verifyCodeBtn.addEventListener("click", handleVerifyCode);
 submitBtn.addEventListener("click", handleSubmit);
 
 // 초기 UI 설정
