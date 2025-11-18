@@ -1,5 +1,3 @@
-/* Header CSS - 일반 페이지용 (사이드바 없음) */
-
 /* Navigation */
 .navigation {
   position: fixed;
@@ -25,6 +23,15 @@
   font-family: "Comfortaa", sans-serif;
   font-size: 28.444px;
   letter-spacing: -0.4267px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo img {
+  max-height: 32px;
+  height: auto;
 }
 
 .nav-right {

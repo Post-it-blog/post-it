@@ -26,6 +26,15 @@
   font-family: "Comfortaa", sans-serif;
   font-size: 28.444px;
   letter-spacing: -0.4267px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo img {
+  max-height: 32px;
+  height: auto;
 }
 
 .nav-right {
