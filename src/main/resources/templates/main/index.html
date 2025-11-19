@@ -1,0 +1,240 @@
+<main layout:fragment="content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/default}" class="main-content">
+    <!-- Section 1: Hero -->
+    <section class="hero-section">
+        <div class="hero-logo">
+            <img src="/images/logo1.png" alt="POST-IT Logo" />
+        </div>
+        <h1 class="hero-title">현재를 게시하고, 미래를 영감으로 채우다.</h1>
+    </section>
+
+    <!-- Section 2: Inspiration -->
+    <section class="inspiration-section">
+        <div class="inspiration-background">
+            <img
+                    src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1280&h=711&fit=crop"
+                    alt="Background"
+            />
+        </div>
+        <div class="inspiration-gradient"></div>
+        <div class="inspiration-content">
+            <p class="inspiration-text">
+                당신만의 특별한 생각을 <strong>POST-IT</strong> 하세요.
+            </p>
+            <p class="inspiration-subtitle">
+                시대를 초월하는 영감이 피어나는 우리들의 디지털 메모장.
+            </p>
+            <button class="button-start-recording">
+                나만의 영감 기록 시작하기
+            </button>
+        </div>
+    </section>
+
+    <!-- Section 3: Blog List -->
+    <section class="blog-list-section">
+        <h2 class="section-heading">BLOG-LIST</h2>
+
+        <!-- Blog Items -->
+        <div class="blog-items-container">
+            <!-- Blog Item 1 -->
+            <article class="blog-item">
+                <div class="blog-item-content">
+                    <div class="blog-author">
+                        <div class="author-avatar"></div>
+                        <span class="author-nickname"
+                        >귀염둥이를 둔 심정을 아시나요 라는 닉네임</span
+                        >
+                    </div>
+                    <h3 class="blog-item-title">그 마음 알아요 라는 블로그 제목</h3>
+                    <p class="blog-item-description">
+                        블로그 소개글이 작성되는 부분입니다. 내용은 첫줄로 시작해서 폰트
+                        사이즈에 맞는 내용이 딱 두줄이 되면 마지막 단어 이후 ...이
+                        붙습니다. 근데 몇자를 제한으...
+                    </p>
+                </div>
+                <div class="blog-item-thumbnail"></div>
+            </article>
+
+            <!-- Blog Item 2 -->
+            <article class="blog-item">
+                <div class="blog-item-content">
+                    <div class="blog-author">
+                        <div class="author-avatar"></div>
+                        <span class="author-nickname"
+                        >귀염둥이를 둔 심정을 아시나요 라는 닉네임</span
+                        >
+                    </div>
+                    <h3 class="blog-item-title">그 마음 알아요 라는 블로그 제목</h3>
+                    <p class="blog-item-description">
+                        블로그 소개글이 작성되는 부분입니다. 내용은 첫줄로 시작해서 폰트
+                        사이즈에 맞는 내용이 딱 두줄이 되면 마지막 단어 이후 ...이
+                        붙습니다. 근데 몇자를 제한으...
+                    </p>
+                </div>
+                <div class="blog-item-thumbnail"></div>
+            </article>
+
+            <!-- Blog Item 3 -->
+            <article class="blog-item">
+                <div class="blog-item-content">
+                    <div class="blog-author">
+                        <div class="author-avatar"></div>
+                        <span class="author-nickname"
+                        >귀염둥이를 둔 심정을 아시나요 라는 닉네임</span
+                        >
+                    </div>
+                    <h3 class="blog-item-title">그 마음 알아요 라는 블로그 제목</h3>
+                    <p class="blog-item-description">
+                        블로그 소개글이 작성되는 부분입니다. 내용은 첫줄로 시작해서 폰트
+                        사이즈에 맞는 내용이 딱 두줄이 되면 마지막 단어 이후 ...이
+                        붙습니다. 근데 몇자를 제한으...
+                    </p>
+                </div>
+                <div class="blog-item-thumbnail"></div>
+            </article>
+
+            <!-- Blog Item 4 -->
+            <article class="blog-item">
+                <div class="blog-item-content">
+                    <div class="blog-author">
+                        <div class="author-avatar"></div>
+                        <span class="author-nickname"
+                        >귀염둥이를 둔 심정을 아시나요 라는 닉네임</span
+                        >
+                    </div>
+                    <h3 class="blog-item-title">그 마음 알아요 라는 블로그 제목</h3>
+                    <p class="blog-item-description">
+                        블로그 소개글이 작성되는 부분입니다. 내용은 첫줄로 시작해서 폰트
+                        사이즈에 맞는 내용이 딱 두줄이 되면 마지막 단어 이후 ...이
+                        붙습니다. 근데 몇자를 제한으...
+                    </p>
+                </div>
+                <div class="blog-item-thumbnail"></div>
+            </article>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <div class="search-category-wrapper">
+                    <select class="search-category-select" id="searchCategory">
+                        <option value="blogName">블로그 명</option>
+                        <option value="blogIntro">블로그 소개</option>
+                        <option value="nickname">닉네임</option>
+                    </select>
+                </div>
+                <div class="search-input-wrapper">
+                    <input type="text" class="search-input" placeholder="" />
+                </div>
+            </div>
+            <button class="search-button">
+                <svg
+                        class="search-icon"
+                        width="34"
+                        height="30"
+                        viewBox="0 0 34 30"
+                        fill="none"
+                >
+                    <g clip-path="url(#clip0)">
+                        <circle
+                                cx="14"
+                                cy="14"
+                                r="10"
+                                stroke="black"
+                                stroke-width="1.67"
+                        />
+                        <line
+                                x1="21"
+                                y1="20"
+                                x2="29"
+                                y2="28"
+                                stroke="black"
+                                stroke-width="1.67"
+                        />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0">
+                            <rect width="34" height="29.14" fill="white" />
+                        </clipPath>
+                    </defs>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container">
+            <button class="pagination-button pagination-prev"><</button>
+            <button class="pagination-button pagination-active">1</button>
+            <button class="pagination-button">2</button>
+            <button class="pagination-button">3</button>
+            <button class="pagination-button">4</button>
+            <button class="pagination-button">5</button>
+            <button class="pagination-button pagination-next">></button>
+        </div>
+    </section>
+
+    <!-- Section 4: Best Posts -->
+    <section class="best-posts-section">
+        <div class="best-posts-wrapper">
+            <h2 class="best-posts-heading">BEST POST 3</h2>
+
+            <div class="best-posts-grid">
+                <!-- Best Post 1 -->
+                <article class="best-post-card">
+                    <div class="best-post-image">
+                        <img
+                                src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=260&h=283&fit=crop"
+                                alt="Blog Image"
+                        />
+                    </div>
+                    <h3 class="best-post-title">블로그 제목</h3>
+                    <p class="best-post-author">블로거 명</p>
+                </article>
+
+                <!-- Best Post 2 -->
+                <article class="best-post-card">
+                    <div class="best-post-image">
+                        <img
+                                src="https://images.unsplash.com/photo-1614851099175-e5b30eb6f696?w=260&h=283&fit=crop"
+                                alt="Blog Image"
+                        />
+                    </div>
+                    <h3 class="best-post-title">블로그 제목</h3>
+                    <p class="best-post-author">블로거 명</p>
+                </article>
+
+                <!-- Best Post 3 -->
+                <article class="best-post-card">
+                    <div class="best-post-image">
+                        <img
+                                src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=260&h=283&fit=crop"
+                                alt="Blog Image"
+                        />
+                    </div>
+                    <h3 class="best-post-title">블로그 제목</h3>
+                    <p class="best-post-author">블로거 명</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Closing -->
+    <section class="closing-section">
+        <div class="closing-background">
+            <img
+                    src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=1282&h=854&fit=crop"
+                    alt="Background"
+            />
+        </div>
+        <div class="closing-gradient"></div>
+        <div class="closing-content">
+            <h2 class="closing-title">No Ordinary Thoughts, No Filters.</h2>
+            <div class="closing-description">
+                <p>필터 없는 당신의 아이디어를 마음껏 펼치세요.</p>
+                <p>복잡한 유행과 규칙에 얽매이지 않고,</p>
+                <p>당신의 생각과 기록을 공유하는 공간입니다.</p>
+            </div>
+        </div>
+    </section>
+</main>
