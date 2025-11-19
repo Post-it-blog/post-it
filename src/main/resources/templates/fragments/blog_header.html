@@ -8,11 +8,11 @@
             <div class="nav-buttons">
                 <th:block th:if="${session.member} == null">
                     <a href="/mem/login"><button class="btn-login">Login</button></a>
-                <button class="btn-register">Register</button>
+                    <a href="/mem/signup" style="text-decoration: none;"><button class="btn-register">Register</button></a>
                 </th:block>
                 <th:block th:if="${session.member} != null">
-                <button class="btn-login">MyPage</button>
-                <button class="btn-register">Logout</button>
+                    <a href="/mypage" style="text-decoration: none;"><button class="btn-login">MyPage</button></a>
+                    <a href="/mem/logout" style="text-decoration: none;"><button class="btn-register">Logout</button></a>
                 </th:block>
             </div>
         </div>

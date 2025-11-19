@@ -113,6 +113,14 @@ public class MemberController {
     }
     /* 로그인 끝 */
 
+    /* 로그아웃 시작 */
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+    /* 로그아웃 끝 */
+
     /* 아이디 찾기 시작 */
     @GetMapping("/findId")
     public String showFindIdPage(Model model) {
