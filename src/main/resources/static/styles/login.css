@@ -1,0 +1,217 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 60px;
+}
+
+.login-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 600px;
+  background-color: #ffffff;
+  padding: 50px 30px;
+  gap: 30px;
+  margin-top: -85px;
+}
+
+/* 로고 */
+.login-card .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.login-card .logo a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card .logo img {
+  max-width: 100%;
+  width: auto;
+  height: 45px !important;
+  max-height: none !important;
+}
+
+/* 입력 폼 컨테이너 */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 539px;
+  background-color: #ffffff;
+  padding: 15px 15px;
+  border-radius: 30px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* Form 스타일 */
+.login-card form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+/* 입력 행 */
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 레이블 */
+.input-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 128px;
+  height: 45px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
+}
+
+.input-label span {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  color: #000000;
+}
+
+/* 입력 필드 */
+.input-field {
+  flex: 1;
+  height: 45px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15) inset;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.input-field input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  color: #000000;
+}
+
+.input-field input::placeholder {
+  color: #a2a2a2;
+}
+
+/* 에러 메시지 */
+.error-message {
+  width: 539px;
+  text-align: center;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  color: #ff0000;
+  letter-spacing: -0.21px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  display: none;
+}
+
+.error-message.show {
+  display: block;
+}
+
+.error-message2 {
+  width: 539px;
+  text-align: center;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  color: #ff0000;
+  letter-spacing: -0.21px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  display: block;
+}
+
+.error-message2.show {
+    display: none;
+}
+
+/* 로그인 버튼 */
+.login-button {
+  width: 539px;
+  height: 56px;
+  background-color: #4e6a9a;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25),
+    0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  cursor: pointer;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+  color: #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #3f5682;
+}
+
+.login-button:active {
+  background-color: #344770;
+}
+
+/* 하단 링크 */
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  height: 30px;
+  margin-top: 10px;
+}
+
+.footer-links .link {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  letter-spacing: -0.225px;
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links .link:hover {
+  color: #4e6a9a;
+}
+
+.footer-links .divider {
+  width: 1px;
+  height: 100%;
+  background-color: #4a4a4a;
+}

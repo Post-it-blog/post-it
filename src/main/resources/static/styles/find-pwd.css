@@ -1,0 +1,378 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background: #ffffff;
+  width: 100%;
+  min-height: 100vh;
+  padding: 30px;
+  overflow-x: hidden;
+}
+
+/* 메인 컨테이너 */
+.find-pwd-page {
+  width: 100%;
+  max-width: 539px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* 로고 */
+.logo-container {
+  width: 259px;
+  height: 54px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-text {
+  font-family: "Rubik Bubbles", sans-serif;
+  font-size: 50px;
+  color: #000000;
+  text-align: center;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  line-height: 54px;
+}
+
+/* 폼 섹션 */
+.form-section {
+  position: relative;
+  background: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 539px;
+}
+
+/* 아이디, 이메일, 인증번호 섹션 */
+.section-form {
+  width: 100%;
+  height: 135px;
+  transition: height 0.3s ease;
+}
+
+.section-form.expanded {
+  height: 202px;
+}
+
+/* 라벨 박스 공통 스타일 */
+.label-box {
+  position: absolute;
+  width: 128px;
+  height: 45px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label-text {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #000000;
+  letter-spacing: 1.5px;
+  text-align: center;
+}
+
+/* 입력 필드 공통 스타일 */
+.input-field {
+  position: absolute;
+  width: 360px;
+  height: 45px;
+  background: #ffffff;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15) inset;
+  padding: 0 14px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #000000;
+  letter-spacing: 1.5px;
+}
+
+.input-field::placeholder {
+  color: #a2a2a2;
+  font-weight: 500;
+}
+
+/* 아이디 필드 */
+.label-id {
+  left: 15px;
+  top: 13px;
+}
+
+.input-id {
+  left: 155px;
+  top: 13px;
+}
+
+/* 이메일 필드 */
+.label-email {
+  left: 15px;
+  top: 77px;
+}
+
+.input-email {
+  left: 155px;
+  top: 77px;
+}
+
+/* 인증번호 필드 */
+.label-verification {
+  left: 15px;
+  top: 141px;
+  display: none;
+}
+
+.input-verification {
+  left: 155px;
+  top: 141px;
+  display: none;
+}
+
+/* 액션 버튼 공통 스타일 */
+.action-btn {
+  position: absolute;
+  width: 101px;
+  height: 33px;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+/* 인증번호 전송 버튼 */
+.btn-send-code {
+  right: 29.65px;
+  top: 83px;
+  background: #4e6a9a;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3), 1px 1px 2px 0px #aabfe4 inset;
+}
+
+.btn-send-code .btn-text {
+  color: #ffffff;
+}
+
+/* 인증번호 확인 버튼 */
+.btn-verify-code {
+  right: 29.65px;
+  top: 147px;
+  background: #ffffff;
+  display: none;
+}
+
+.btn-verify-code .btn-text {
+  color: #4c6794;
+}
+
+.btn-text {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-align: center;
+}
+
+/* 에러 메시지 */
+.error-message-container {
+  width: 100%;
+  max-width: 539px;
+  padding: 10px 20px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.error-message-container.visible {
+  opacity: 1;
+  max-height: 200px;
+}
+
+.error-message-container > div {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #ff4444;
+  line-height: 20px;
+  margin-bottom: 5px;
+}
+
+.error-message-container > div:last-child {
+  margin-bottom: 0;
+}
+
+.success-message {
+  color: #4e6a9a !important;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  .logo-container {
+    width: 220px;
+    height: 46px;
+  }
+
+  .logo-text {
+    font-size: 42px;
+    line-height: 46px;
+    letter-spacing: 3px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    padding: 15px 10px;
+  }
+
+  .logo-container {
+    width: 180px;
+    height: 38px;
+  }
+
+  .logo-text {
+    font-size: 36px;
+    line-height: 38px;
+    letter-spacing: 2.5px;
+  }
+
+  .label-box {
+    width: 100px;
+    height: 38px;
+  }
+
+  .label-text {
+    font-size: 13px;
+    letter-spacing: 1.3px;
+  }
+
+  .input-field {
+    width: calc(100% - 220px);
+    height: 38px;
+    font-size: 13px;
+    letter-spacing: 1.3px;
+    padding: 0 12px;
+  }
+
+  .label-id,
+  .label-email,
+  .label-verification {
+    left: 10px;
+  }
+
+  .input-id,
+  .input-email,
+  .input-verification {
+    left: 120px;
+  }
+
+  .action-btn {
+    width: 85px;
+    height: 28px;
+  }
+
+  .btn-text {
+    font-size: 11px;
+    letter-spacing: 1.1px;
+  }
+
+  .btn-send-code {
+    right: 10px;
+    top: 80px;
+  }
+
+  .btn-verify-code {
+    right: 10px;
+    top: 143px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .logo-container {
+    width: 160px;
+    height: 34px;
+  }
+
+  .logo-text {
+    font-size: 32px;
+    line-height: 34px;
+    letter-spacing: 2px;
+  }
+
+  .label-box {
+    width: 85px;
+    height: 35px;
+  }
+
+  .label-text {
+    font-size: 12px;
+    letter-spacing: 1.2px;
+  }
+
+  .input-field {
+    width: calc(100% - 195px);
+    height: 35px;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    padding: 0 10px;
+  }
+
+  .input-id,
+  .input-email,
+  .input-verification {
+    left: 95px;
+  }
+
+  .action-btn {
+    width: 75px;
+    height: 26px;
+  }
+
+  .btn-text {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .btn-send-code {
+    top: 79px;
+  }
+
+  .btn-verify-code {
+    top: 142px;
+  }
+
+  .error-message-container {
+    font-size: 12px;
+  }
+}

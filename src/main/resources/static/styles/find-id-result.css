@@ -1,0 +1,247 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background: #ffffff;
+  width: 100%;
+  min-height: 100vh;
+  padding: 30px;
+  overflow-x: hidden;
+}
+
+/* 메인 컨테이너 */
+.result-page {
+  width: 100%;
+  max-width: 539px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* 로고 */
+.logo-container {
+  width: 259px;
+  height: 54px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-text {
+  font-family: "Rubik Bubbles", sans-serif;
+  font-size: 50px;
+  color: #000000;
+  text-align: center;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  line-height: 54px;
+}
+
+/* 결과 섹션 */
+.result-section {
+  position: relative;
+  background: #ffffff;
+  border-radius: 50px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 539px;
+  height: 194px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px 30px;
+}
+
+/* 메시지 컨테이너 */
+.message-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* 메시지 텍스트 */
+.message-text {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #000000;
+  letter-spacing: 1.5px;
+  line-height: 20px;
+}
+
+/* 아이디 표시 박스 */
+.id-display {
+  min-width: 150px;
+  max-width: 300px;
+  height: 45px;
+  background: #ffffff;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15) inset;
+  padding: 0 20px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #000000;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* 확인 버튼 */
+.confirm-btn {
+  width: 101px;
+  height: 33px;
+  border: none;
+  border-radius: 50px;
+  background: #4e6a9a;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3), 1px 1px 2px 0px #aabfe4 inset;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.confirm-btn:active {
+  transform: translateY(0);
+}
+
+.btn-text {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  .logo-container {
+    width: 220px;
+    height: 46px;
+  }
+
+  .logo-text {
+    font-size: 42px;
+    line-height: 46px;
+    letter-spacing: 3px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    padding: 15px 10px;
+  }
+
+  .logo-container {
+    width: 180px;
+    height: 38px;
+  }
+
+  .logo-text {
+    font-size: 36px;
+    line-height: 38px;
+    letter-spacing: 2.5px;
+  }
+
+  .result-section {
+    border-radius: 40px;
+    padding: 30px 20px;
+    height: auto;
+    min-height: 180px;
+  }
+
+  .message-text {
+    font-size: 14px;
+    letter-spacing: 1.4px;
+  }
+
+  .id-display {
+    min-width: 120px;
+    max-width: 250px;
+    height: 40px;
+    font-size: 14px;
+    letter-spacing: 1.4px;
+    padding: 0 15px;
+  }
+
+  .confirm-btn {
+    width: 90px;
+    height: 30px;
+  }
+
+  .btn-text {
+    font-size: 11px;
+    letter-spacing: 1.1px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .logo-container {
+    width: 160px;
+    height: 34px;
+  }
+
+  .logo-text {
+    font-size: 32px;
+    line-height: 34px;
+    letter-spacing: 2px;
+  }
+
+  .result-section {
+    border-radius: 30px;
+    padding: 25px 15px;
+    gap: 25px;
+  }
+
+  .message-container {
+    gap: 8px;
+  }
+
+  .message-text {
+    font-size: 13px;
+    letter-spacing: 1.3px;
+  }
+
+  .id-display {
+    min-width: 100px;
+    max-width: 200px;
+    height: 36px;
+    font-size: 13px;
+    letter-spacing: 1.3px;
+    padding: 0 12px;
+  }
+
+  .confirm-btn {
+    width: 80px;
+    height: 28px;
+  }
+
+  .btn-text {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+}

@@ -5,10 +5,15 @@
             <img src="/images/logo1.png" alt="POST-IT Logo">
         </a>
         <div class="nav-right">
-            <a href="#" class="nav-item">블로그 홈</a>
             <div class="nav-buttons">
-                <button class="btn-login">Log in</button>
+                <th:block th:if="${session.member} == null">
+                    <a href="/mem/login"><button class="btn-login">Login</button></a>
                 <button class="btn-register">Register</button>
+                </th:block>
+                <th:block th:if="${session.member} != null">
+                <button class="btn-login">MyPage</button>
+                <button class="btn-register">Logout</button>
+                </th:block>
             </div>
         </div>
         <!-- 햄버거 메뉴 버튼 (모바일) -->
