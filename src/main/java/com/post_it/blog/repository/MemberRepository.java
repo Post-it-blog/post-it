@@ -73,8 +73,8 @@ public class MemberRepository {
 
     public Long addBlog(SignUpReq signUpReq, Long memberId) {
         String defaultTitleDesc = signUpReq.getNickname() + "님의 블로그 입니다.";
-        String sql = "insert into blog (MEMBER_ID, BLOG_TITLE, BLOG_DESC) values (?, ?, ?)";
-        jdbcTemplate.update(sql, memberId, defaultTitleDesc, defaultTitleDesc);
+        String sql = "insert into blog (MEMBER_ID, BLOG_TITLE, BLOG_DESC, PROFILE_IMG, PROFILE_IMG_ORIGINAL, PROFILE_IMG_SIZE, PROFILE_IMG_TYPE) values (?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, memberId, defaultTitleDesc, defaultTitleDesc, "/upload/no_user_image.png", "no_user_image.png", null, "image/png");
         return jdbcTemplate.queryForObject("select BLOG_SEQ.CURRVAL from dual", Long.class);
     }
 
