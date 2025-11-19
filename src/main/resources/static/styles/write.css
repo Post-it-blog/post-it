@@ -1,0 +1,163 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background: white;
+  min-height: 100vh;
+  padding: 94px 0 40px 210px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+}
+
+#postForm {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+
+/* 카테고리 선택 */
+.category-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-select {
+  width: 170px;
+  height: 35px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  letter-spacing: -0.225px;
+  text-align: center;
+  padding: 0 30px 0 15px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='7' viewBox='0 0 10 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.category-select:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+/* 제목 입력 */
+.title-input {
+  width: 860px;
+  height: 67px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+  padding: 0 20px;
+}
+
+.title-input::placeholder {
+  opacity: 0.45;
+  color: black;
+}
+
+.title-input:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 게시글 내용 (Quill 에디터) */
+.editor-wrapper {
+  width: 860px;
+  height: 600px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+#editor {
+  height: 100%;
+  border: none;
+}
+
+#editor .ql-container {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  letter-spacing: -0.225px;
+  border: none;
+}
+
+#editor .ql-editor.ql-blank::before {
+  color: rgba(0, 0, 0, 0.45);
+  font-style: normal;
+  left: 20px;
+}
+
+#editor .ql-toolbar {
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ql-video {
+  width: 60%;
+  height: 300px;
+  margin: 0 auto;
+}
+
+/* POST 버튼 */
+.button-wrapper {
+  width: 860px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+.post-button {
+  width: 163px;
+  height: 50px;
+  background: white;
+  opacity: 0.9;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  color: #4c6794;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.post-button:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.post-button:active {
+  transform: translateY(0);
+}
+
+/* 반응형 */
+@media (max-width: 920px) {
+  body {
+    padding: 64px 20px 40px;
+  }
+
+  .title-input,
+  .editor-wrapper,
+  .button-wrapper {
+    width: 100%;
+  }
+}

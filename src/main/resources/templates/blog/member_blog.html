@@ -1,0 +1,208 @@
+<main layout:fragment="content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layout/blog}">
+
+    <div class="blog-main-container">
+        <div class="blog-content-area">
+            <th:block th:if="${postList.size()} != 0 or ${query != null}">
+                <div class="blog-search-wrapper">
+                    <div class="blog-content-header">
+                        <h1 class="blog-title-text">
+                            <th:block th:if="${query == null}">
+                                전체 글 <span class="blog-count-number" th:text="${pageInfo != null} ? ${pageInfo.totalCount} : 0">5</span>
+                            </th:block>
+                            <th:block th:if="${query != null}">
+                                검색 결과 <span class="blog-count-number" th:text="|(${pageInfo != null ? pageInfo.totalCount : 0})|">(5)</span>
+                            </th:block>
+                        </h1>
+                    </div>
+                    <form class="blog-search-container" th:action="@{/blog/{blogId}/search(blogId=${blogInfo.blogId})}" method="get">
+                        <input
+                                type="text"
+                                name="query"
+                                th:value="${query}"
+                                class="blog-search-input"
+                                placeholder="검색 할 내용을 작성해 주세요."
+                        />
+                        <button type="submit" class="blog-search-button">
+                            <svg
+                                    class="blog-search-icon"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                            >
+                                <circle
+                                        cx="9.16667"
+                                        cy="9.16667"
+                                        r="6.66667"
+                                        stroke="black"
+                                        stroke-width="1.66667"
+                                />
+                                <path
+                                        d="M17.5 17.5L13.875 13.875"
+                                        stroke="black"
+                                        stroke-width="1.66667"
+                                />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </th:block>
+
+            <div class="blog-empty-state" th:if="${query != null and (#lists.isEmpty(postList))}" style="min-height: 300px;">
+                <h2 class="blog-empty-title">검색 결과가 없습니다.</h2>
+                <button class="blog-empty-write-btn" th:onclick="|location.href='@{/blog/{blogId}(blogId=${blogInfo.blogId})}'|">전체 글로 돌아가기</button>
+            </div>
+
+            <div class="blog-posts-list" th:if="${postList != null and not #lists.isEmpty(postList)}">
+                <article class="blog-post-card" th:each="post : ${postList}" th:classappend="${post.mainImageUrl == null} ? 'blog-post-no-image' : ''">
+
+                    <div class="blog-post-image" th:if="${post.mainImageUrl != null}">
+                        <a th:href="@{/post/{postId}(postId=${post.postId})}" style="text-decoration: none; color: unset; display: block; width: 100%; height: 100%;">
+                            <img
+                                    th:src="${post.mainImageUrl}"
+                                    th:alt="${post.title}"
+                            />
+                        </a>
+                    </div>
+
+                    <div class="blog-post-content">
+                        <a th:href="@{/post/{postId}(postId=${post.postId})}"
+                           th:text="${post.title}"
+                           style="text-decoration: none; color: unset; display: block; font-weight: bold; font-size: 1.2em;">
+                            저희 강아지 귀엽죠?
+                        </a>
+
+                        <a th:href="@{/post/{postId}(postId=${post.postId})}"
+                           style="text-decoration: none; color: unset; display: block; margin-top: 12px;">
+                            <p class="blog-post-description" th:text="${post.contentPreview}" style="margin: 0;">
+                                사실 저희 집 강아지는 아니랍니다.
+                            </p>
+                        </a>
+
+                        <div class="blog-post-meta" style="margin-top: 12px;">
+                            <span class="blog-post-category" th:text="${post.categoryName}">낙서장</span>
+                            <span class="blog-post-date" th:text="${#dates.format(post.createdAt, 'yy.MM.dd HH:mm')}">25.11.14 18:51</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="blog-empty-state" th:if="${postList == null or (#lists.isEmpty(postList) and query == null)}">
+                <div class="blog-empty-icon">
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                        <circle cx="60" cy="60" r="50" stroke="#dce2ee" stroke-width="4"/>
+                        <path d="M45 55 L55 65 L75 45" stroke="#dce2ee" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="85" y1="85" x2="105" y2="105" stroke="#dce2ee" stroke-width="6" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 class="blog-empty-title">아직 등록된 게시글이 없습니다</h2>
+                <th:block th:if="${isMyBlog} != null">
+                    <p class="blog-empty-description">첫 번째 게시글을 작성해보세요!</p>
+                    <button class="blog-empty-write-btn" th:onclick="|location.href='@{/blog/{blogId}/write(blogId=${blogInfo.blogId})}'|">글쓰기</button>
+                </th:block>
+            </div>
+
+            <div class="blog-pagination" th:if="${postList != null and not #lists.isEmpty(postList)}" th:object="${pageInfo}">
+                <button class="blog-page-btn blog-page-prev"
+                        th:if="*{prev}"
+                        th:onclick="|location.href='@{${targetUrl}(cp=*{startPage - 1}, query=${query})}'|">
+                    &lt;
+                </button>
+
+                <th:block th:each="page : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}">
+                    <button class="blog-page-btn"
+                            th:classappend="${page == pageInfo.currentPage} ? 'blog-page-active' : ''"
+                            th:text="${page}"
+                            th:onclick="|location.href='@{${targetUrl}(cp=${page}, query=${query})}'|">
+                        1
+                    </button>
+                </th:block>
+
+                <button class="blog-page-btn blog-page-next"
+                        th:if="*{next}"
+                        th:onclick="|location.href='@{${targetUrl}(cp=*{endPage + 1}, query=${query})}'|">
+                    &gt;
+                </button>
+
+            </div>
+        </div>
+
+        <aside class="blog-sidebar" th:object="${blogInfo}">
+            <div class="blog-profile-section">
+                <div class="blog-profile-image">
+                    <img
+                            th:src="*{profileImg}"
+                            th:alt="*{memberNickname} + '님의 프로필'"
+                    />
+                </div>
+                <h2 class="blog-profile-name" th:text="|*{memberNickname}님의 블로그|">그레이트킹짱규님의 블로그</h2>
+                <p class="blog-profile-description" th:text="*{blogDesc}">블로그 소개 영역</p>
+                <th:block th:if="${isMyBlog} != null">
+                    <div class="blog-action-buttons">
+                        <button class="blog-btn blog-btn-write" th:onclick="|location.href='@{/blog/{blogId}/write(blogId=${blogInfo.blogId})}'|">글쓰기</button>
+                        <button class="blog-btn blog-btn-manage">블로그 관리</button>
+                    </div>
+                </th:block>
+            </div>
+
+            <div class="blog-category-section">
+                <ul class="blog-category-list">
+                    <li class="blog-category-item">
+                        <a th:href="@{/blog/{blogId}(blogId=${blogInfo.blogId})}"
+                           th:text="|전체 게시글 (${totalPostCount})|"
+                           style="text-decoration: none; color: unset;">
+                            전체 게시글
+                        </a>
+                    </li>
+
+                    <li class="blog-category-item" th:each="category : ${categoryList}">
+                        <a th:href="@{/blog/{blogId}/category/{categoryId}(blogId=${blogInfo.blogId}, categoryId=${category.categoryId})}"
+                           th:text="|${category.categoryName} (${category.postCount})|" style="text-decoration: none; color: unset;">
+                            낙서장 (1)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="blog-tabs-section">
+                <div class="blog-tabs-header">
+                    <button class="blog-tab blog-tab-active">최근글</button>
+                    <span class="blog-tab-divider">|</span>
+                    <button class="blog-tab">인기글</button>
+                </div>
+
+                <div class="blog-recent-posts">
+                    <th:block th:if="${recentPostList != null and not #lists.isEmpty(recentPostList)}">
+                        <div th:each="recentPost : ${recentPostList}">
+
+                            <div class="blog-recent-post blog-recent-no-image">
+
+                                <div class="blog-recent-info">
+                                    <p class="blog-recent-title">
+                                        <a th:href="@{/post/{postId}(postId=${recentPost.postId})}"
+                                           th:text="${recentPost.title}"
+                                           style="text-decoration: none; color: unset;">
+                                            저희 강아지 귀엽죠?
+                                        </a>
+                                    </p>
+                                    <p class="blog-recent-date" th:text="${#dates.format(recentPost.createdAt, 'yyyy.MM.dd HH:mm')}">
+                                        2025.11.14 18:51
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="blog-divider" th:if="${recentPostStat.index < 4 and recentPostStat.index < #lists.size(recentPostList) - 1}"></div>
+                        </div>
+                    </th:block>
+
+                    <div class="blog-recent-empty" th:if="${recentPostList == null or #lists.isEmpty(recentPostList)}">
+                        <p>최근 작성된 글이 없습니다</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>

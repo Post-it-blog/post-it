@@ -1,0 +1,617 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+    margin-top: 59px;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  line-height: 1.5;
+}
+
+/* 메인 컨테이너 */
+.blog-main-container {
+  display: flex;
+  max-width: 1280px;
+  min-height: 1012px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+/* 왼쪽 컨텐츠 영역 */
+.blog-content-area {
+  flex: 1;
+  padding: 79px 101px 50px;
+  background-color: #ffffff;
+  border-radius: 0 30px 30px 0;
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+/* 제목 영역 */
+.blog-content-header {
+  margin-bottom: 24px;
+}
+
+.blog-title-text {
+  font-size: 15px;
+  font-weight: 400;
+  color: #000000;
+  letter-spacing: -0.225px;
+}
+
+.blog-count-number {
+  color: red;
+  font-weight: 400;
+}
+
+/* 검색 영역 */
+.blog-search-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.blog-search-container {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  width: 248px;
+  height: 30px;
+}
+
+.blog-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0 12px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+  background: transparent;
+  letter-spacing: -0.225px;
+}
+
+.blog-search-input::placeholder {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.blog-search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.blog-search-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* 게시글 목록 */
+.blog-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 50px;
+}
+
+/* 게시글 카드 */
+.blog-post-card {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+  padding: 0;
+  overflow: hidden;
+  height: 150px;
+}
+
+.blog-post-image {
+  width: 140px;
+  height: 110px;
+  margin: 20px 0 0 18px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.blog-post-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.blog-post-content {
+  flex: 1;
+  padding: 20px 24px 20px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-post-no-image .blog-post-content {
+  padding: 20px 24px;
+}
+
+.blog-post-title {
+  font-size: 15px;
+  font-weight: 400;
+  color: #000000;
+  letter-spacing: -0.225px;
+  line-height: 22.5px;
+  margin-bottom: 12px;
+}
+
+.blog-post-description {
+  font-size: 15px;
+  font-weight: 400;
+  color: #000000;
+  opacity: 0.5;
+  letter-spacing: -0.225px;
+  line-height: 22.5px;
+  margin-bottom: 12px;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.blog-post-meta {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.blog-post-category,
+.blog-post-date {
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+  opacity: 0.7;
+  letter-spacing: -0.18px;
+  line-height: 18px;
+}
+
+/* 페이지네이션 */
+.blog-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 60px;
+}
+
+.blog-page-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.blog-page-btn:hover:not(:disabled) {
+  background-color: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+.blog-page-active {
+  background-color: #4e6a9a;
+  color: #ffffff;
+}
+
+.blog-page-prev[disabled] {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* 사이드바 */
+.blog-sidebar {
+  width: 337px;
+  background-color: #ffffff;
+  border-radius: 30px 0 0 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+/* 프로필 영역 */
+.blog-profile-section {
+  background-color: #dce2ee;
+  border-radius: 30px 0 0 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  padding: 37px 64px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.blog-profile-image {
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.blog-profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-profile-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: -0.225px;
+  margin-bottom: 14px;
+}
+
+.blog-profile-description {
+  font-size: 15px;
+  font-weight: 350;
+  color: #636363;
+  letter-spacing: -0.225px;
+  margin-bottom: 25px;
+  width: 300px;
+}
+
+/* 버튼 영역 */
+.blog-action-buttons {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.blog-btn {
+  flex: 1;
+  max-width: 120px;
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+  font-family: "Noto Sans", "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.225px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.blog-btn-write {
+  background-color: #ffffff;
+  color: #4c6794;
+}
+
+.blog-btn-write:hover {
+  background-color: #f5f5f5;
+}
+
+.blog-btn-manage {
+  background-color: #4c6794;
+  color: #ffffff;
+}
+
+.blog-btn-manage:hover {
+  background-color: #3d5578;
+}
+
+/* 카테고리 영역 */
+.blog-category-section {
+  background-color: #dce2ee;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  padding: 20px 20px;
+}
+
+.blog-category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.blog-category-item {
+  font-size: 15px;
+  font-weight: 400;
+  color: #000000;
+  letter-spacing: -0.225px;
+  text-align: center;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.blog-category-item:hover {
+  color: #4e6a9a;
+}
+
+/* 탭 영역 */
+.blog-tabs-section {
+  background-color: #dce2ee;
+  border-radius: 0 0 0 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  padding: 14px 24px 30px;
+  flex: 1;
+}
+
+.blog-tabs-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.blog-tab {
+  background: none;
+  border: none;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #9e9898;
+  letter-spacing: -0.225px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.blog-tab:hover {
+  color: #000000;
+}
+
+.blog-tab-active {
+  color: #000000;
+}
+
+.blog-tab-divider {
+  font-size: 15px;
+  color: #9d8f8f;
+}
+
+/* 최근글 목록 */
+.blog-recent-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.blog-recent-post {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.blog-recent-thumbnail {
+  width: 64px;
+  height: 50.853px;
+  background-color: #4e6a9a;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.blog-recent-no-image .blog-recent-thumbnail {
+  display: none;
+}
+
+.blog-recent-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.blog-recent-title {
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+  letter-spacing: -0.18px;
+  line-height: normal;
+}
+
+.blog-recent-date {
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+  letter-spacing: -0.18px;
+  line-height: normal;
+}
+
+.blog-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 2px auto;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .blog-main-container {
+    flex-direction: column-reverse;
+  }
+
+  .blog-sidebar {
+    width: 100%;
+    border-radius: 30px 30px 0 0;
+  }
+
+  .blog-content-area {
+    border-radius: 0 0 30px 30px;
+    padding: 40px 40px 50px;
+  }
+
+  .blog-profile-section {
+    border-radius: 30px 30px 0 0;
+  }
+
+  .blog-tabs-section {
+    border-radius: 0;
+  }
+}
+
+/* 빈 상태 스타일 */
+.blog-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 600px;
+  padding: 60px 20px;
+}
+
+.blog-empty-icon {
+  margin-bottom: 30px;
+  opacity: 0.6;
+}
+
+.blog-empty-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #000000;
+  letter-spacing: -0.36px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.blog-empty-description {
+  font-size: 16px;
+  font-weight: 400;
+  color: #636363;
+  letter-spacing: -0.24px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.blog-empty-write-btn {
+  padding: 12px 40px;
+  background-color: #4c6794;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(76, 103, 148, 0.3);
+  transition: all 0.3s ease;
+}
+
+.blog-empty-write-btn:hover {
+  background-color: #3d5578;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 103, 148, 0.4);
+}
+
+.blog-recent-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #9e9898;
+  font-size: 14px;
+  letter-spacing: -0.21px;
+}
+
+@media (max-width: 768px) {
+  .blog-content-area {
+    padding: 30px 20px;
+  }
+
+  .blog-post-card {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .blog-post-image {
+    width: 100%;
+    height: 180px;
+    margin: 20px 20px 0;
+    border-radius: 10px;
+  }
+
+  .blog-post-content {
+    padding: 15px 20px 20px;
+  }
+
+  .blog-profile-section {
+    padding: 30px 20px;
+  }
+
+  .blog-action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .blog-btn {
+    max-width: 200px;
+    width: 100%;
+  }
+
+  .blog-empty-state {
+    min-height: 400px;
+    padding: 40px 20px;
+  }
+
+  .blog-empty-icon svg {
+    width: 80px;
+    height: 80px;
+  }
+
+  .blog-empty-title {
+    font-size: 20px;
+  }
+
+  .blog-empty-description {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-title-text {
+    font-size: 14px;
+  }
+
+  .blog-search-container {
+    width: 100%;
+  }
+
+  .blog-pagination {
+    gap: 5px;
+  }
+
+  .blog-page-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+}
