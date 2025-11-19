@@ -102,6 +102,10 @@ public class MemberController {
             MemberRes memberRes = memberService.login(loginReq);
 
             if (memberRes != null) {
+                System.out.println(memberRes.getMemberId());
+                System.out.println(memberRes.getNickname());
+                System.out.println(memberRes.getRole());
+                System.out.println(memberRes.getCreatedAt());
                 session.setAttribute("member", memberRes);
                 session.setMaxInactiveInterval(30*60);
                 return "redirect:/";

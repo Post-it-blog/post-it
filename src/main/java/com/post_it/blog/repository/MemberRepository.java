@@ -40,9 +40,10 @@ public class MemberRepository {
 
 
     public MemberRes findByUserId(String userId) {
+        System.out.println(userId);
         String sql = "select MEMBER_ID, PWD, NICKNAME, ROLE, CREATED_AT from member where ID = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+            MemberRes memberRes = jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
                         new MemberRes(
                             rs.getLong("MEMBER_ID"),
                             rs.getNString("NICKNAME"),
@@ -50,6 +51,7 @@ public class MemberRepository {
                             rs.getTimestamp("CREATED_AT").toLocalDateTime()
                         )
                     , userId);
+            return memberRes;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

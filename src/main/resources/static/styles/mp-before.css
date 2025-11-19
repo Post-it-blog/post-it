@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 95px;
+}
+
+.header {
+  background-color: white;
+  height: 80px;
+  border-radius: 30px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+  width: 403px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 54px;
+}
+
+.header h1 {
+  font-weight: 500;
+  font-size: 30px;
+  color: black;
+  text-align: center;
+}
+
+.password-box {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  width: 900px;
+  padding: 69px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 31px;
+}
+
+.label {
+  background-color: white;
+  height: 45px;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
+  width: 244px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label p {
+  font-weight: 500;
+  font-size: 15px;
+  color: black;
+  text-align: center;
+  letter-spacing: 1.5px;
+  line-height: 20px;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 766px;
+  display: flex;
+  justify-content: center;
+}
+
+.password-input {
+  background-color: white;
+  height: 65px;
+  border-radius: 20px;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15) inset;
+  width: 80%;
+  padding-left: 36px;
+  padding-right: 36px;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  color: black;
+  border: none;
+  outline: none;
+}
+
+.password-input::placeholder {
+  color: #a2a2a2;
+}
+
+.error-message {
+  color: #ff4444;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+}
+
+.confirm-button {
+  background-color: #4e6a9a;
+  height: 56px;
+  width: 109px;
+  border-radius: 30px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  font-family: 'Comfortaa', 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #f0f0f0;
+  text-align: center;
+  letter-spacing: -0.3px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.confirm-button:hover {
+  background-color: #5a7aae;
+}

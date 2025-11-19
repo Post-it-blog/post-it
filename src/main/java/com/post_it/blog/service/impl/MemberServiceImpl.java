@@ -45,8 +45,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberRes login(LoginReq loginReq) {
-        MemberRes memberRes = new MemberRes();
-        memberRes = memberRepository.findByUserId(loginReq.getUserId());
+        MemberRes memberRes = memberRepository.findByUserId(loginReq.getUserId());
         if (memberRes != null) {
             if (passwordEncoder.matches(loginReq.getPassword(), memberRepository.findPwdByUserId(loginReq.getUserId()))) {
                 return memberRes;

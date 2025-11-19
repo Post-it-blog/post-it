@@ -1,0 +1,95 @@
+<main layout:fragment="content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/header_only}">
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo2">
+            <img src="/images/logo1.png" alt="POSTIT Logo">
+        </div>
+
+        <!-- Profile Section -->
+        <section class="section profile-section">
+            <div class="profile-content">
+                <div class="profile-left">
+                    <div class="profile-image-container">
+                        <div class="profile-image-wrapper">
+                            <img th:src="${profileImg}" alt="Profile Image" class="profile-image">
+                        </div>
+                    </div>
+                    <a href="#" style="text-decoration: none;"><div class="change-image-text">이미지 변경하기</div></a>
+                </div>
+                <div class="profile-right">
+                    <div class="info-row">
+                        <div class="info-label">Name</div>
+                        <div class="info-value" th:text="${name}">홍길동</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Nickname</div>
+                        <div class="info-value" th:text="${nickname}">홍길동임</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">ID</div>
+                        <div class="info-value" th:text="${userId}">honggildong1</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Email</div>
+                        <div class="info-value" th:text="${email}">honggildong1@naver.com</div>
+                    </div>
+                </div>
+            </div>
+            <div class="withdrawal-text">탈퇴하기</div>
+        </section>
+
+        <!-- Password Change Section -->
+        <section class="section password-section">
+            <h2 class="section-title">비밀번호 변경</h2>
+            <form action="/mypage/pwdChange" method="post">
+                <div class="section-content">
+                    <div class="form-row">
+                        <div class="form-label">기존 비밀번호</div>
+                        <input type="password" class="form-input" name="pwd" placeholder="기존 비밀번호">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">새 비밀번호</div>
+                        <input type="password" class="form-input" name="newPwd" placeholder="새 비밀번호">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">비밀번호 확인</div>
+                        <input type="password" class="form-input" name="newPwdConfirm" placeholder="새 비밀번호 확인">
+                    </div>
+
+                    <!-- Error Message -->
+                    <div class="error-message" th:if="${passwordErrorMsg} != null" th:utext="${passwordErrorMsg}">
+                        유효하지 않는 입력 값 입니다.
+                    </div>
+
+                    <button class="btn-submit">변경하기</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Nickname Change Section -->
+        <section class="section nickname-section">
+            <h2 class="section-title">닉네임 변경</h2>
+            <form action="/mypage/nickChange" method="post">
+                <div class="section-content">
+                    <div class="form-row">
+                        <div class="form-label">기존 닉네임</div>
+                        <input type="text" class="form-input" placeholder="기존 닉네임" th:value="${nickname}" readonly>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">닉네임 변경</div>
+                        <input type="text" class="form-input" name="newNickname" placeholder="변경하실 닉네임">
+                    </div>
+
+                    <!-- Error Message -->
+                    <div class="error-message" th:if="${nicknameErrorMsg} != null" th:text="${nicknameErrorMsg}">
+                        유효하지 않는 입력 값 입니다.
+                    </div>
+
+                    <button class="btn-submit">변경하기</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>

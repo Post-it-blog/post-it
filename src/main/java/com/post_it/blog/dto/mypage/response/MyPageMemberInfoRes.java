@@ -1,17 +1,17 @@
-package com.post_it.blog.dto.member.response;
+package com.post_it.blog.dto.mypage.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class MemberRes {
-    private Long memberId;
+public class MyPageMemberInfoRes {
+    private String name;
     private String nickname;
-    private String role;
-    private LocalDateTime createdAt;
+    private String userId;
+    private String email;
+    private String profileImg;
+
 }
