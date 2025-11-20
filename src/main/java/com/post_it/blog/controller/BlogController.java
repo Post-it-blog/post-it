@@ -170,6 +170,12 @@ public class BlogController {
         }
     }
 
+    @GetMapping("/test")
+    public String test(Model model) {
+        model.addAttribute("pageCss", "post_detail.css");
+        return "blog/post_detail";
+    }
+
     private String sanitizeHtml(String content) {
         Safelist safelist = Safelist.relaxed();
         safelist.preserveRelativeLinks(true);

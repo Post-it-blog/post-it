@@ -1,0 +1,198 @@
+<main layout:fragment="content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layout/blog}">
+    <div class="container">
+        <!-- 메인 콘텐츠 (왼쪽: 게시글 상세) -->
+        <div class="main-content">
+            <div class="post-frame">
+                <!-- 게시글 헤더 -->
+                <div class="post-header">
+                    <div class="post-category">강의</div>
+                    <h1 class="post-title">이건 첫번 째 레슨</h1>
+                    <div class="post-meta">
+                        <span class="author">그레이트킹짱규</span>
+                        <span class="date">25.11.14 18:55</span>
+                    </div>
+                </div>
+
+                <!-- 내용 프레임 -->
+                <div class="content-frame">
+                    <div class="post-content">
+                        <p>안녕하세여 내용이 들어가는 부분 첫 문장 입니다.</p>
+                        <p>&nbsp;</p>
+                        <p>
+                            문장이 들어가는 부분의 하단은 글씨 크기부터, 이미지 , 컬러
+                            등은 사용자의 작성 방식에 따라 달라지기 때문에 따로 디자인
+                            하지 않았습니다. 길이도 이와 동일 하기 때문에 참고
+                            부탁드립니다 .
+                        </p>
+                        <p>땡큐~</p>
+                        <!-- 임시 이미지 예시 -->
+                        <p style="margin-top: 20px">
+                            <img
+                                    src="https://via.placeholder.com/800x400"
+                                    alt="임시 이미지"
+                                    style="max-width: 100%; border-radius: 10px"
+                            />
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 공감 버튼 -->
+                <div class="like-section">
+                    <div class="like-button">
+                        <div class="like-icon">❤</div>
+                        <span>공감</span>
+                    </div>
+                </div>
+
+                <!-- 목록 (이전글/다음글) -->
+                <div class="post-list">
+                    <div class="list-title">'블로그' 님의 다른 글</div>
+                    <div class="list-items">
+                        <div class="list-item">
+                            <div class="list-label">이전글</div>
+                            <div class="list-content">이전글 제목입니다.</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-label">다음글</div>
+                            <div class="list-content">다음글 제목입니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 댓글 달기 -->
+                <div class="comment-write">
+                    <div class="comment-input-area">
+                <textarea
+                        class="comment-input"
+                        placeholder="댓글 입력"
+                ></textarea>
+                    </div>
+                    <div class="submit-area">
+                        <button class="submit-button">등록</button>
+                    </div>
+                </div>
+
+                <!-- 댓글 섹션 -->
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <span class="comments-title">댓글</span>
+                        <span class="comment-count">2</span>
+                    </div>
+
+                    <!-- 댓글 1 -->
+                    <div class="comment">
+                        <div class="comment-avatar"></div>
+                        <div class="comment-body">
+                            <div class="comment-top">
+                                <span class="comment-author">킹짱규</span>
+                                <span class="comment-date">25.11.18 18:39</span>
+                            </div>
+                            <div class="comment-text">개추요! ㅋ</div>
+                            <div class="comment-actions">
+                                <a href="#">답글</a>
+                                <a href="#">삭제</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 대댓글 -->
+                    <div class="comment reply">
+                        <div class="reply-line"></div>
+                        <div class="comment-avatar"></div>
+                        <div class="comment-body">
+                            <div class="comment-top">
+                                <span class="comment-author">갓파</span>
+                                <span class="comment-date">25.11.18 18:45</span>
+                            </div>
+                            <div class="comment-text">ㅋ</div>
+                            <div class="comment-actions">
+                                <a href="#">답글</a>
+                                <a href="#">수정</a>
+                                <a href="#">삭제</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 사이드바 (오른쪽: 회원 블로그 스타일 그대로 적용) -->
+        <aside class="blog-sidebar">
+            <div class="blog-profile-section">
+                <div class="blog-profile-image">
+                    <!-- 임시 프로필 이미지 -->
+                    <img src="https://via.placeholder.com/116" alt="프로필" />
+                </div>
+                <h2 class="blog-profile-name">그레이트킹짱규님의 블로그</h2>
+                <p class="blog-profile-description">
+                    블로그 소개 영역입니다. 이 영역은 블로그에 대한 간단한 설명이
+                    들어갑니다.
+                </p>
+                <div class="blog-action-buttons">
+                    <button class="blog-btn blog-btn-write">글쓰기</button>
+                    <button class="blog-btn blog-btn-manage">블로그 관리</button>
+                </div>
+            </div>
+
+            <div class="blog-category-section">
+                <ul class="blog-category-list">
+                    <li class="blog-category-item">전체 게시글 (5)</li>
+                    <li class="blog-category-item">낙서장 (1)</li>
+                    <li class="blog-category-item">강의 (3)</li>
+                    <li class="blog-category-item">일상 (1)</li>
+                </ul>
+            </div>
+
+            <div class="blog-tabs-section">
+                <div class="blog-tabs-header">
+                    <button class="blog-tab blog-tab-active">최근글</button>
+                    <span class="blog-tab-divider">|</span>
+                    <button class="blog-tab">인기글</button>
+                </div>
+
+                <div class="blog-recent-posts">
+                    <!-- 최근글 1 -->
+                    <div class="blog-recent-post blog-recent-no-image">
+                        <div class="blog-recent-info">
+                            <p class="blog-recent-title">
+                                <a href="#" style="text-decoration: none; color: unset"
+                                >저희 강아지 귀엽죠?</a
+                                >
+                            </p>
+                            <p class="blog-recent-date">25.11.14 18:51</p>
+                        </div>
+                    </div>
+                    <div class="blog-divider"></div>
+
+                    <!-- 최근글 2 -->
+                    <div class="blog-recent-post blog-recent-no-image">
+                        <div class="blog-recent-info">
+                            <p class="blog-recent-title">
+                                <a href="#" style="text-decoration: none; color: unset"
+                                >이건 첫번 째 레슨</a
+                                >
+                            </p>
+                            <p class="blog-recent-date">25.11.14 18:55</p>
+                        </div>
+                    </div>
+                    <div class="blog-divider"></div>
+
+                    <!-- 최근글 3 -->
+                    <div class="blog-recent-post blog-recent-no-image">
+                        <div class="blog-recent-info">
+                            <p class="blog-recent-title">
+                                <a href="#" style="text-decoration: none; color: unset"
+                                >게시글 내용에 1000자가 들어 있습니다.</a
+                                >
+                            </p>
+                            <p class="blog-recent-date">25.11.14 18:50</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>
