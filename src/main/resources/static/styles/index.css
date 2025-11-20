@@ -177,13 +177,7 @@ body {
   gap: 10px;
 }
 
-.author-avatar {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background-color: #4e6a9a;
-  flex-shrink: 0;
-}
+/* [삭제됨] .author-avatar 관련 스타일 제거 */
 
 .author-nickname {
   font-size: 13px;
@@ -206,12 +200,20 @@ body {
   overflow: hidden;
 }
 
+/* [수정됨] 블로그 썸네일 (프로필 이미지) 원형 스타일 */
 .blog-item-thumbnail {
-  width: 210px;
-  height: 145px;
+  width: 150px;
+  height: 150px;
   background-color: #d9d9d9;
   flex-shrink: 0;
-  border-radius: 8px;
+  border-radius: 50%; /* 원형 */
+  overflow: hidden;
+}
+
+.blog-item-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Search Container */
@@ -404,7 +406,7 @@ body {
 }
 
 .best-post-title {
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 700;
   color: #1c1c1c;
   text-align: center;
@@ -413,7 +415,7 @@ body {
 }
 
 .best-post-author {
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 500;
   color: #727272;
   text-align: center;
@@ -509,9 +511,10 @@ body {
     flex-direction: column;
   }
 
+  /* [수정] 모바일 등 작은 화면에서도 원형 프로필 이미지 유지 */
   .blog-item-thumbnail {
-    width: 100%;
-    max-width: 400px;
+    width: 150px;
+    height: 150px;
   }
 
   .closing-content {

@@ -16,32 +16,40 @@ public class CommentRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    // [수정] 닉네임 NULL 처리 로직 추가
     public List<CommentRes> findAllByPostId(Long postId) {
         String sql = "SELECT C.COMMENT_ID, C.POST_ID, C.MEMBER_ID, M.NICKNAME, " +
                 "       C.PARENT_COMMENT_ID, C.CONTENT, C.CREATED_AT, " +
-                "       B.PROFILE_IMG, B.BLOG_ID " + // BLOG_ID 추가
+                "       B.PROFILE_IMG, B.BLOG_ID " +
                 "FROM COMMENTS C " +
                 "LEFT JOIN MEMBER M ON C.MEMBER_ID = M.MEMBER_ID " +
                 "LEFT JOIN BLOG B ON M.MEMBER_ID = B.MEMBER_ID " +
                 "WHERE C.POST_ID = ? " +
                 "ORDER BY C.CREATED_AT ASC";
 
-        RowMapper<CommentRes> rowMapper = (rs, rowNum) -> CommentRes.builder()
-                .commentId(rs.getLong("COMMENT_ID"))
-                .postId(rs.getLong("POST_ID"))
-                .memberId(rs.getObject("MEMBER_ID", Long.class))
-                .memberNickname(rs.getString("NICKNAME"))
-                .parentCommentId(rs.getObject("PARENT_COMMENT_ID", Long.class))
-                .content(rs.getString("CONTENT"))
-                .createdAt(rs.getTimestamp("CREATED_AT").toLocalDateTime())
-                .profileImg(rs.getString("PROFILE_IMG"))
-                .blogId(rs.getObject("BLOG_ID", Long.class)) // 블로그 ID 매핑
-                .build();
+        RowMapper<CommentRes> rowMapper = (rs, rowNum) -> {
+            // 닉네임이 없으면(탈퇴회원) "(알수 없음)"으로 설정
+            String nickname = rs.getString("NICKNAME");
+            if (nickname == null) {
+                nickname = "(알수 없음)";
+            }
+
+            return CommentRes.builder()
+                    .commentId(rs.getLong("COMMENT_ID"))
+                    .postId(rs.getLong("POST_ID"))
+                    .memberId(rs.getObject("MEMBER_ID", Long.class))
+                    .memberNickname(nickname) // 처리된 닉네임 사용
+                    .parentCommentId(rs.getObject("PARENT_COMMENT_ID", Long.class))
+                    .content(rs.getString("CONTENT"))
+                    .createdAt(rs.getTimestamp("CREATED_AT").toLocalDateTime())
+                    .profileImg(rs.getString("PROFILE_IMG"))
+                    .blogId(rs.getObject("BLOG_ID", Long.class))
+                    .build();
+        };
 
         return jdbcTemplate.query(sql, rowMapper, postId);
     }
 
-    // [추가] 댓글 단건 조회 (권한 확인용)
     public CommentRes findById(Long commentId) {
         String sql = "SELECT MEMBER_ID FROM COMMENTS WHERE COMMENT_ID = ?";
         try {
@@ -52,13 +60,11 @@ public class CommentRepository {
         }
     }
 
-    // [추가] 댓글 수정
     public void update(Long commentId, String content) {
         String sql = "UPDATE COMMENTS SET CONTENT = ? WHERE COMMENT_ID = ?";
         jdbcTemplate.update(sql, content, commentId);
     }
 
-    // [추가] 댓글 삭제
     public void delete(Long commentId) {
         String sql = "DELETE FROM COMMENTS WHERE COMMENT_ID = ?";
         jdbcTemplate.update(sql, commentId);

@@ -2,58 +2,52 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{/layout/blog}">
-    <div class="container">
 
-        <!-- ================= 메인 콘텐츠 (왼쪽: 게시글 상세) ================= -->
+    <div class="container">
+        <!-- 메인 콘텐츠 (왼쪽: 게시글 상세) -->
         <div class="main-content" th:object="${post}">
             <div class="post-frame">
-
-                <!-- 1. 게시글 헤더 (카테고리, 제목, 작성자 정보) -->
+                <!-- 게시글 헤더 -->
                 <div class="post-header">
                     <div class="post-category">
-                        <!-- 카테고리 클릭 시 해당 카테고리 목록으로 이동 -->
                         <a th:href="@{/blog/{blogId}/category/{categoryId}(blogId=${blogInfo.blogId}, categoryId=*{categoryId})}"
                            th:text="*{categoryName}" style="text-decoration: none; color: inherit;">카테고리명</a>
                     </div>
                     <h1 class="post-title" th:text="*{title}">게시글 제목</h1>
                     <div class="post-meta">
-                <span class="author">
-                    <!-- 작성자 닉네임 클릭 시 블로그 메인으로 이동 -->
-                    <a th:href="@{/blog/{blogId}(blogId=${blogInfo.blogId})}"
-                       th:text="*{writerNickname}" style="text-decoration: none; color: inherit;">작성자닉네임</a>
-                </span>
+                        <span class="author">
+                            <a th:href="@{/blog/{blogId}(blogId=${blogInfo.blogId})}"
+                               th:text="*{writerNickname}" style="text-decoration: none; color: inherit;">작성자닉네임</a>
+                        </span>
                         <span class="date" th:text="${#temporals.format(post.createdAt, 'yy.MM.dd HH:mm')}">25.11.14 18:55</span>
                     </div>
                 </div>
 
-                <!-- 2. 게시글 내용 -->
+                <!-- 내용 프레임 -->
                 <div class="content-frame">
                     <div class="post-content" th:utext="*{content}">
-                        <!-- HTML 태그가 포함된 본문 내용이 여기에 들어갑니다 -->
+                        <!-- HTML 태그가 포함된 본문 내용 -->
                     </div>
                 </div>
 
-                <!-- 3. 공감(좋아요) 및 관리(수정/삭제) 버튼 -->
+                <!-- 공감(좋아요) 및 관리(수정/삭제) 버튼 -->
                 <div class="like-section">
-                    <!-- 공감 버튼 -->
                     <div class="like-button" th:onclick="|toggleLike(${post.postId})|">
-                        <!-- 내가 좋아요 눌렀으면 'liked' 클래스 추가 (빨간 하트) -->
                         <div class="like-icon" th:classappend="${post.liked} ? 'liked' : ''" id="likeIcon">❤</div>
                         <span>공감 <span id="likeCountDisplay" th:text="*{likeCount}">0</span></span>
                     </div>
 
-                    <!-- 수정/삭제 버튼 (로그인한 사용자가 작성자 본인일 때만 표시) -->
+                    <!-- 수정/삭제 버튼 (작성자 본인만 표시) -->
                     <div class="post-admin-buttons" th:if="${loginMemberId != null and loginMemberId == post.memberId}">
                         <button class="post-admin-btn" th:onclick="|location.href='@{/blog/{blogId}/post/{postId}/edit(blogId=${blogInfo.blogId}, postId=${post.postId})}'|">수정</button>
                         <button class="post-admin-btn" th:onclick="|deletePost(${post.postId}, ${blogInfo.blogId})|">삭제</button>
                     </div>
                 </div>
 
-                <!-- 4. 이전글 / 다음글 목록 -->
+                <!-- 목록 (이전글/다음글) -->
                 <div class="post-list">
                     <div class="list-title" th:text="|'${post.writerNickname}' 님의 다른 글|">'OOO' 님의 다른 글</div>
                     <div class="list-items">
-                        <!-- 이전글 -->
                         <div class="list-item" th:if="${post.prevPost != null}">
                             <div class="list-label">이전글</div>
                             <div class="list-content">
@@ -66,7 +60,6 @@
                             <div class="list-content" style="color: #999;">이전 글이 없습니다.</div>
                         </div>
 
-                        <!-- 다음글 -->
                         <div class="list-item" th:if="${post.nextPost != null}">
                             <div class="list-label">다음글</div>
                             <div class="list-content">
@@ -81,7 +74,7 @@
                     </div>
                 </div>
 
-                <!-- 5. 댓글 작성 폼 (메인) -->
+                <!-- 댓글 작성 폼 -->
                 <div class="comment-write">
                     <div class="comment-input-area">
                         <textarea class="comment-input" id="mainCommentInput" placeholder="댓글 입력"></textarea>
@@ -91,11 +84,11 @@
                     </div>
                 </div>
 
-                <!-- 6. 댓글 목록 섹션 -->
+                <!-- 댓글 목록 섹션 -->
                 <div class="comments-section">
                     <div class="comments-header">
                         <span class="comments-title">댓글</span>
-                        <span class="comment-count" th:text="${totalCommentCount}">2</span>
+                        <span class="comment-count" th:text="${totalCommentCount}">0</span>
                     </div>
 
                     <!-- 댓글 반복 출력 -->
@@ -103,26 +96,30 @@
                         <!-- [부모 댓글] -->
                         <div class="comment" th:id="|comment-${comment.commentId}|">
                             <div class="comment-avatar">
-                                <!-- 작성자 프로필 이미지 (클릭 시 블로그 이동) -->
+                                <!-- 1. 정상 회원 (블로그 링크 있음) -->
                                 <a th:if="${comment.blogId != null}" th:href="@{/blog/{blogId}(blogId=${comment.blogId})}">
                                     <img th:src="${comment.profileImg}" alt="프로필" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                                 </a>
-                                <img th:if="${comment.blogId == null}" th:src="${comment.profileImg}" alt="프로필" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                                <!-- 2. 탈퇴 회원 (블로그 링크 없음, 기본 이미지) -->
+                                <img th:if="${comment.blogId == null}"
+                                     th:src="${comment.profileImg != null ? comment.profileImg : '/upload/no_user_image.png'}"
+                                     alt="프로필" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                             </div>
                             <div class="comment-body">
                                 <div class="comment-top">
-                        <span class="comment-author">
-                             <a th:if="${comment.blogId != null}" th:href="@{/blog/{blogId}(blogId=${comment.blogId})}"
-                                th:text="${comment.memberNickname}" style="text-decoration: none; color: inherit;">닉네임</a>
-                             <span th:if="${comment.blogId == null}" th:text="${comment.memberNickname}">닉네임</span>
-                        </span>
+                                    <span class="comment-author">
+                                        <!-- 1. 정상 회원 (닉네임 클릭 시 이동) -->
+                                        <a th:if="${comment.blogId != null}" th:href="@{/blog/{blogId}(blogId=${comment.blogId})}"
+                                           th:text="${comment.memberNickname}" style="text-decoration: none; color: inherit;">닉네임</a>
+                                        <!-- 2. 탈퇴 회원 (이동 불가, 닉네임만 표시) -->
+                                        <span th:if="${comment.blogId == null}" th:text="${comment.memberNickname}" style="color:#999;">(알수 없음)</span>
+                                    </span>
                                     <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yy.MM.dd HH:mm')}">날짜</span>
                                 </div>
 
-                                <!-- 댓글 내용 (평소) -->
                                 <div class="comment-text" th:id="|comment-text-${comment.commentId}|" th:text="${comment.content}">내용</div>
 
-                                <!-- 댓글 수정 입력창 (수정 버튼 누르면 보임) -->
+                                <!-- 댓글 수정창 -->
                                 <div class="comment-edit-area" th:id="|comment-edit-${comment.commentId}|" style="display: none;">
                                     <textarea class="comment-input" style="min-height: 60px; margin-bottom: 10px;" th:text="${comment.content}"></textarea>
                                     <div style="display: flex; gap: 8px; justify-content: flex-end;">
@@ -133,7 +130,6 @@
 
                                 <div class="comment-actions">
                                     <a href="javascript:void(0)" th:onclick="|toggleReplyForm(${comment.commentId})|">답글</a>
-                                    <!-- 본인 댓글일 때만 수정/삭제 버튼 표시 -->
                                     <th:block th:if="${loginMemberId != null and loginMemberId == comment.memberId}">
                                         <a href="javascript:void(0)" th:onclick="|enableEditComment(${comment.commentId})|">수정</a>
                                         <a href="javascript:void(0)" th:onclick="|deleteComment(${comment.commentId})|">삭제</a>
@@ -142,7 +138,7 @@
                             </div>
                         </div>
 
-                        <!-- [답글 입력 폼 자리] (JS로 토글됨) -->
+                        <!-- 답글 입력 폼 -->
                         <div th:id="|reply-form-${comment.commentId}|" style="display: none;"></div>
 
                         <!-- [대댓글 목록] -->
@@ -152,22 +148,22 @@
                                 <a th:if="${reply.blogId != null}" th:href="@{/blog/{blogId}(blogId=${reply.blogId})}">
                                     <img th:src="${reply.profileImg}" alt="프로필" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                                 </a>
-                                <img th:if="${reply.blogId == null}" th:src="${reply.profileImg}" alt="프로필" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                                <img th:if="${reply.blogId == null}"
+                                     th:src="${reply.profileImg != null ? reply.profileImg : '/upload/no_user_image.png'}"
+                                     alt="프로필" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                             </div>
                             <div class="comment-body">
                                 <div class="comment-top">
-                        <span class="comment-author">
-                            <a th:if="${reply.blogId != null}" th:href="@{/blog/{blogId}(blogId=${reply.blogId})}"
-                               th:text="${reply.memberNickname}" style="text-decoration: none; color: inherit;">닉네임</a>
-                            <span th:if="${reply.blogId == null}" th:text="${reply.memberNickname}">닉네임</span>
-                        </span>
+                                    <span class="comment-author">
+                                        <a th:if="${reply.blogId != null}" th:href="@{/blog/{blogId}(blogId=${reply.blogId})}"
+                                           th:text="${reply.memberNickname}" style="text-decoration: none; color: inherit;">닉네임</a>
+                                        <span th:if="${reply.blogId == null}" th:text="${reply.memberNickname}" style="color:#999;">(알수 없음)</span>
+                                    </span>
                                     <span class="comment-date" th:text="${#temporals.format(reply.createdAt, 'yy.MM.dd HH:mm')}">날짜</span>
                                 </div>
 
-                                <!-- 대댓글 내용 -->
                                 <div class="comment-text" th:id="|comment-text-${reply.commentId}|" th:text="${reply.content}">내용</div>
 
-                                <!-- 대댓글 수정 입력창 -->
                                 <div class="comment-edit-area" th:id="|comment-edit-${reply.commentId}|" style="display: none;">
                                     <textarea class="comment-input" style="min-height: 60px; margin-bottom: 10px;" th:text="${reply.content}"></textarea>
                                     <div style="display: flex; gap: 8px; justify-content: flex-end;">
@@ -189,14 +185,14 @@
             </div>
         </div>
 
-        <!-- ================= 사이드바 (오른쪽) ================= -->
+        <!-- 사이드바 -->
         <aside class="blog-sidebar" th:object="${blogInfo}">
             <div class="blog-profile-section">
                 <div class="blog-profile-image">
                     <img th:src="*{profileImg}" th:alt="*{memberNickname} + '님의 프로필'">
                 </div>
-                <h2 class="blog-profile-name" th:text="|*{memberNickname}님의 블로그|">그레이트킹짱규님의 블로그</h2>
-                <p class="blog-profile-description" th:text="*{blogDesc}">블로그 소개 영역</p>
+                <h2 class="blog-profile-name" th:text="|*{memberNickname}님의 블로그|">블로그명</h2>
+                <p class="blog-profile-description" th:text="*{blogDesc}">소개</p>
                 <th:block th:if="${isMyBlog} != null">
                     <div class="blog-action-buttons">
                         <button class="blog-btn blog-btn-write" th:onclick="|location.href='@{/blog/{blogId}/write(blogId=${blogInfo.blogId})}'|">글쓰기</button>
@@ -204,32 +200,24 @@
                     </div>
                 </th:block>
             </div>
-
             <div class="blog-category-section">
                 <ul class="blog-category-list">
                     <li class="blog-category-item">
                         <a th:href="@{/blog/{blogId}(blogId=${blogInfo.blogId})}"
-                           th:text="|전체 게시글 (${totalPostCount})|"
-                           style="text-decoration: none; color: unset;">
-                            전체 게시글
-                        </a>
+                           th:text="|전체 게시글 (${totalPostCount})|" style="text-decoration: none; color: unset;">전체</a>
                     </li>
                     <li class="blog-category-item" th:each="category : ${categoryList}">
                         <a th:href="@{/blog/{blogId}/category/{categoryId}(blogId=${blogInfo.blogId}, categoryId=${category.categoryId})}"
-                           th:text="|${category.categoryName} (${category.postCount})|" style="text-decoration: none; color: unset;">
-                            낙서장 (1)
-                        </a>
+                           th:text="|${category.categoryName} (${category.postCount})|" style="text-decoration: none; color: unset;">카테고리</a>
                     </li>
                 </ul>
             </div>
-
             <div class="blog-tabs-section">
                 <div class="blog-tabs-header">
                     <button class="blog-tab blog-tab-active">최근글</button>
                     <span class="blog-tab-divider">|</span>
                     <button class="blog-tab">인기글</button>
                 </div>
-
                 <div class="blog-recent-posts">
                     <th:block th:if="${recentPostList != null and not #lists.isEmpty(recentPostList)}">
                         <div th:each="recentPost : ${recentPostList}">
@@ -237,14 +225,9 @@
                                 <div class="blog-recent-info">
                                     <p class="blog-recent-title">
                                         <a th:href="@{/blog/{blogId}/post/{postId}(blogId=${blogInfo.blogId}, postId=${recentPost.postId})}"
-                                           th:text="${recentPost.title}"
-                                           style="text-decoration: none; color: unset;">
-                                            저희 강아지 귀엽죠?
-                                        </a>
+                                           th:text="${recentPost.title}" style="text-decoration: none; color: unset;">제목</a>
                                     </p>
-                                    <p class="blog-recent-date" th:text="${#dates.format(recentPost.createdAt, 'yyyy.MM.dd HH:mm')}">
-                                        2025.11.14 18:51
-                                    </p>
+                                    <p class="blog-recent-date" th:text="${#dates.format(recentPost.createdAt, 'yyyy.MM.dd HH:mm')}">날짜</p>
                                 </div>
                             </div>
                             <div class="blog-divider" th:if="${recentPostStat.index < 4 and recentPostStat.index < #lists.size(recentPostList) - 1}"></div>
@@ -257,176 +240,170 @@
             </div>
         </aside>
     </div>
-<!-- 현재 게시글 ID 저장 (JS용) -->
-<input type="hidden" id="currentPostId" th:value="${post.postId}">
 
-<!-- ================= 자바스크립트 (댓글, 공감, 수정/삭제 기능) ================= -->
-<script>
-    // 1. 공감(좋아요) 토글
-    function toggleLike(postId) {
-        fetch(`/blog/post/${postId}/like`, {
-            method: 'POST'
-        })
-        .then(response => {
-            if (response.status === 401) {
-                alert('로그인이 필요합니다.');
-                location.href = '/mem/login';
+    <input type="hidden" id="currentPostId" th:value="${post.postId}">
+
+    <script>
+        // 1. 공감(좋아요) 토글
+        function toggleLike(postId) {
+            fetch(`/blog/post/${postId}/like`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    alert('로그인이 필요합니다.');
+                    location.href = '/mem/login';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    const likeIcon = document.getElementById('likeIcon');
+                    const likeCountDisplay = document.getElementById('likeCountDisplay');
+
+                    if (data.liked) {
+                        likeIcon.classList.add('liked');
+                    } else {
+                        likeIcon.classList.remove('liked');
+                    }
+                    likeCountDisplay.innerText = data.count;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // 2. 게시글 삭제
+        function deletePost(postId, blogId) {
+            if (!confirm('정말 게시글을 삭제하시겠습니까?')) return;
+            fetch(`/blog/${blogId}/post/${postId}/delete`, {
+                method: 'POST'
+            })
+            .then(res => {
+                if(res.ok) {
+                    alert('삭제되었습니다.');
+                    location.href = `/blog/${blogId}`;
+                } else {
+                    alert('삭제 실패');
+                }
+            });
+        }
+
+        // 3. 댓글/대댓글 등록
+        function submitComment(parentCommentId) {
+            const postId = document.getElementById('currentPostId').value;
+            let content;
+
+            if (parentCommentId) {
+                content = document.getElementById('reply-input-' + parentCommentId).value;
+            } else {
+                content = document.getElementById('mainCommentInput').value;
+            }
+
+            if (!content || !content.trim()) {
+                alert('내용을 입력해주세요.');
                 return;
             }
-            return response.json();
-        })
-        .then(data => {
-            if (data) {
-                const likeIcon = document.getElementById('likeIcon');
-                const likeCountDisplay = document.getElementById('likeCountDisplay');
 
-                // 아이콘 색상 변경
-                if (data.liked) {
-                    likeIcon.classList.add('liked');
+            const data = {
+                postId: postId,
+                content: content,
+                parentCommentId: parentCommentId
+            };
+
+            fetch('/blog/comment/write', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else if (response.status === 401) {
+                    alert('로그인이 필요합니다.');
+                    location.href = '/mem/login';
                 } else {
-                    likeIcon.classList.remove('liked');
+                    alert('댓글 등록 실패');
                 }
-                // 숫자 업데이트 (+1 / -1)
-                likeCountDisplay.innerText = data.count;
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    // 2. 게시글 삭제
-    function deletePost(postId, blogId) {
-        if (!confirm('정말 게시글을 삭제하시겠습니까?')) return;
-        fetch(`/blog/${blogId}/post/${postId}/delete`, {
-            method: 'POST'
-        })
-        .then(res => {
-            if(res.ok) {
-                alert('삭제되었습니다.');
-                location.href = `/blog/${blogId}`;
-            } else {
-                alert('삭제 실패');
-            }
-        });
-    }
-
-    // 3. 댓글/대댓글 등록
-    function submitComment(parentCommentId) {
-        const postId = document.getElementById('currentPostId').value;
-        let content;
-
-        if (parentCommentId) {
-            // 대댓글 입력값
-            content = document.getElementById('reply-input-' + parentCommentId).value;
-        } else {
-            // 메인 댓글 입력값
-            content = document.getElementById('mainCommentInput').value;
+            });
         }
 
-        if (!content || !content.trim()) {
-            alert('내용을 입력해주세요.');
-            return;
-        }
+        // 4. 대댓글 폼 토글
+        function toggleReplyForm(commentId) {
+            const formContainer = document.getElementById('reply-form-' + commentId);
 
-        const data = {
-            postId: postId,
-            content: content,
-            parentCommentId: parentCommentId
-        };
-
-        fetch('/blog/comment/write', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (response.ok) {
-                location.reload();
-            } else if (response.status === 401) {
-                alert('로그인이 필요합니다.');
-                location.href = '/mem/login';
-            } else {
-                alert('댓글 등록 실패');
+            if (formContainer.style.display === 'block') {
+                formContainer.style.display = 'none';
+                formContainer.innerHTML = '';
+                return;
             }
-        });
-    }
 
-    // 4. 대댓글 입력폼 열기/닫기
-    function toggleReplyForm(commentId) {
-        const formContainer = document.getElementById('reply-form-' + commentId);
-
-        if (formContainer.style.display === 'block') {
-            formContainer.style.display = 'none';
-            formContainer.innerHTML = '';
-            return;
-        }
-
-        // 스타일이 적용된 대댓글 입력 폼 HTML
-        const formHtml = `
-            <div class="comment reply" style="padding:0; margin-bottom:20px; background:transparent; box-shadow:none;">
-                <div class="reply-line"></div>
-                <div style="flex:1;">
-                    <div class="comment-write" style="margin-top:0;">
-                         <div class="comment-input-area">
-                            <textarea id="reply-input-${commentId}" class="comment-input" placeholder="답글을 입력하세요"></textarea>
-                         </div>
-                         <div class="submit-area">
-                            <button class="cancel-button" onclick="toggleReplyForm(${commentId})">취소</button>
-                            <button class="submit-button" onclick="submitComment(${commentId})">등록</button>
-                         </div>
+            const formHtml = `
+                <div class="comment reply" style="padding:0; margin-bottom:20px; background:transparent; box-shadow:none;">
+                    <div class="reply-line"></div>
+                    <div style="flex:1;">
+                        <div class="comment-write" style="margin-top:0;">
+                             <div class="comment-input-area">
+                                <textarea id="reply-input-${commentId}" class="comment-input" placeholder="답글을 입력하세요"></textarea>
+                             </div>
+                             <div class="submit-area">
+                                <button class="cancel-button" onclick="toggleReplyForm(${commentId})">취소</button>
+                                <button class="submit-button" onclick="submitComment(${commentId})">등록</button>
+                             </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
-        formContainer.innerHTML = formHtml;
-        formContainer.style.display = 'block';
-    }
-
-    // 5. 댓글 수정 모드 활성화
-    function enableEditComment(commentId) {
-        document.getElementById('comment-text-' + commentId).style.display = 'none';
-        document.getElementById('comment-edit-' + commentId).style.display = 'block';
-    }
-
-    // 6. 댓글 수정 취소
-    function cancelEditComment(commentId) {
-        document.getElementById('comment-text-' + commentId).style.display = 'block';
-        document.getElementById('comment-edit-' + commentId).style.display = 'none';
-    }
-
-    // 7. 댓글 수정 저장
-    function updateComment(commentId) {
-        const editArea = document.getElementById('comment-edit-' + commentId);
-        const content = editArea.querySelector('textarea').value;
-
-        if(!content.trim()) {
-            alert('내용을 입력해주세요.');
-            return;
+            `;
+            formContainer.innerHTML = formHtml;
+            formContainer.style.display = 'block';
         }
 
-        fetch('/blog/comment/update', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ commentId: commentId, content: content })
-        }).then(res => {
-            if(res.ok) location.reload();
-            else alert('수정 실패');
-        });
-    }
+        // 5. 댓글 수정 모드 활성화
+        function enableEditComment(commentId) {
+            document.getElementById('comment-text-' + commentId).style.display = 'none';
+            document.getElementById('comment-edit-' + commentId).style.display = 'block';
+        }
 
-    // 8. 댓글 삭제
-    function deleteComment(commentId) {
-        if (!confirm('댓글을 삭제하시겠습니까?')) return;
+        // 6. 댓글 수정 취소
+        function cancelEditComment(commentId) {
+            document.getElementById('comment-text-' + commentId).style.display = 'block';
+            document.getElementById('comment-edit-' + commentId).style.display = 'none';
+        }
 
-        const formData = new FormData();
-        formData.append('commentId', commentId);
+        // 7. 댓글 수정 저장
+        function updateComment(commentId) {
+            const editArea = document.getElementById('comment-edit-' + commentId);
+            const content = editArea.querySelector('textarea').value;
 
-        fetch('/blog/comment/delete', {
-            method: 'POST',
-            body: formData
-        }).then(res => {
-            if(res.ok) location.reload();
-            else alert('삭제 실패');
-        });
-    }
-</script>
+            if(!content.trim()) {
+                alert('내용을 입력해주세요.');
+                return;
+            }
+
+            fetch('/blog/comment/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ commentId: commentId, content: content })
+            }).then(res => {
+                if(res.ok) location.reload();
+                else alert('수정 실패');
+            });
+        }
+
+        // 8. 댓글 삭제
+        function deleteComment(commentId) {
+            if (!confirm('댓글을 삭제하시겠습니까?')) return;
+
+            const formData = new FormData();
+            formData.append('commentId', commentId);
+
+            fetch('/blog/comment/delete', {
+                method: 'POST',
+                body: formData
+            }).then(res => {
+                if(res.ok) location.reload();
+                else alert('삭제 실패');
+            });
+        }
+    </script>
 </main>
