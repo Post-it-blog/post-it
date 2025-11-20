@@ -21,7 +21,7 @@ public class MyPageRepository {
     }
 
     public MyPageMemberInfoRes getMemberInfo(Long memberId) {
-        String sql = "select NAME, NICKNAME, ID, EMAIL, PROFILE_IMG from member m join blog b on m.member_id = b.member_id where m.member_id = ?";
+        String sql = "select NAME, NICKNAME, ID, EMAIL, PROFILE_IMG, BLOG_ID from member m join blog b on m.member_id = b.member_id where m.member_id = ?";
         try {
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
                         new MyPageMemberInfoRes(
@@ -29,7 +29,8 @@ public class MyPageRepository {
                               rs.getNString(2),
                               rs.getString(3),
                               rs.getString(4),
-                              rs.getNString(5)
+                              rs.getNString(5),
+                              rs.getLong(6)
                         )
                     , memberId);
         } catch (EmptyResultDataAccessException e) {

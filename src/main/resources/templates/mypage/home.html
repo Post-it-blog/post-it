@@ -16,7 +16,7 @@
                             <img th:src="${profileImg}" alt="Profile Image" class="profile-image">
                         </div>
                     </div>
-                    <a href="#" style="text-decoration: none;"><div class="change-image-text">이미지 변경하기</div></a>
+                    <a th:href="@{/blog/{blogId}/profile(blogId=${blogId})}" style="text-decoration: none;"><div class="change-image-text">이미지 변경하기</div></a>
                 </div>
                 <div class="profile-right">
                     <div class="info-row">

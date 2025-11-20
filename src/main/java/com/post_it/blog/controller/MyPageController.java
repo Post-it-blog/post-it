@@ -67,6 +67,7 @@ public class MyPageController {
         model.addAttribute("userId", myPageMemberInfoRes.getUserId());
         model.addAttribute("email", myPageMemberInfoRes.getEmail());
         model.addAttribute("profileImg", myPageMemberInfoRes.getProfileImg());
+        model.addAttribute("blogId", myPageMemberInfoRes.getBlogId());
         model.addAttribute("pageCss", "mypage-home.css");
         return "mypage/home";
     }
@@ -95,6 +96,7 @@ public class MyPageController {
         model.addAttribute("userId", myPageMemberInfoRes.getUserId());
         model.addAttribute("email", myPageMemberInfoRes.getEmail());
         model.addAttribute("profileImg", myPageMemberInfoRes.getProfileImg());
+        model.addAttribute("blogId", myPageMemberInfoRes.getBlogId());
         model.addAttribute("pageCss", "mypage-home.css");
         return "mypage/home";
     }
@@ -123,6 +125,7 @@ public class MyPageController {
         model.addAttribute("userId", myPageMemberInfoRes.getUserId());
         model.addAttribute("email", myPageMemberInfoRes.getEmail());
         model.addAttribute("profileImg", myPageMemberInfoRes.getProfileImg());
+        model.addAttribute("blogId", myPageMemberInfoRes.getBlogId());
         model.addAttribute("pageCss", "mypage-home.css");
         return "mypage/home";
     }

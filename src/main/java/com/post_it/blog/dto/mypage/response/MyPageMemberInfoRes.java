@@ -13,5 +13,5 @@ public class MyPageMemberInfoRes {
     private String userId;
     private String email;
     private String profileImg;
-
+    private Long blogId;
 }
