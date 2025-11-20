@@ -37,7 +37,12 @@
                     </div>
                 </div>
             </div>
-            <div class="withdrawal-text">탈퇴하기</div>
+
+            <!-- [수정] 탈퇴하기 버튼에 onclick 이벤트 추가 -->
+            <div class="withdrawal-text" onclick="confirmWithdrawal()" style="cursor: pointer;">탈퇴하기</div>
+
+            <!-- [추가] 탈퇴 요청을 위한 숨겨진 폼 (POST 전송용) -->
+            <form id="withdrawalForm" action="/mypage/delete" method="post" style="display: none;"></form>
         </section>
 
         <!-- Password Change Section -->
@@ -92,4 +97,13 @@
             </form>
         </section>
     </div>
+
+    <!-- [추가] 탈퇴 처리 스크립트 -->
+    <script>
+        function confirmWithdrawal() {
+            if (confirm("정말로 탈퇴하시겠습니까?\n탈퇴 후에는 데이터를 복구할 수 없습니다.")) {
+                document.getElementById('withdrawalForm').submit();
+            }
+        }
+    </script>
 </main>

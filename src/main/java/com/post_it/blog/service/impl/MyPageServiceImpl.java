@@ -45,4 +45,9 @@ public class MyPageServiceImpl implements MyPageService {
     public void updateNickname(Long memberId, String newNickname) {
         myPageRepository.updateNickname(memberId, newNickname);
     }
+
+    @Override
+    public void deleteMember(Long memberId) {
+        myPageRepository.deleteMember(memberId);
+    }
 }

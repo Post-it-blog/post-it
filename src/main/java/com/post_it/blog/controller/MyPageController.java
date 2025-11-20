@@ -126,5 +126,13 @@ public class MyPageController {
         model.addAttribute("pageCss", "mypage-home.css");
         return "mypage/home";
     }
+
+    @PostMapping("/delete")
+    public String processMemberDelete(HttpSession session) {
+        MemberRes member = (MemberRes) session.getAttribute("member");
+        myPageService.deleteMember(member.getMemberId());
+        session.invalidate();
+        return "redirect:/";
+    }
     /* 마이페이지 끝 */
 }

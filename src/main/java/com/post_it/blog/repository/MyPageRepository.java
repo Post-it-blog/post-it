@@ -52,4 +52,9 @@ public class MyPageRepository {
         String sql = "update member set nickname = ? where member_id = ?";
         jdbcTemplate.update(sql, newNickname, memberId);
     }
+
+    public void deleteMember(Long memberId) {
+        String sql = "delete member where member_id = ?";
+        jdbcTemplate.update(sql, memberId);
+    }
 }

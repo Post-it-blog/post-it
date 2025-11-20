@@ -12,4 +12,6 @@ public interface MyPageService {
     boolean duplicateNick(String newNickname);
 
     void updateNickname(Long memberId, String newNickname);
+
+    void deleteMember(Long memberId);
 }
