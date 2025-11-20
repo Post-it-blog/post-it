@@ -1,9 +1,7 @@
 package com.post_it.blog.repository;
 
 import com.post_it.blog.dto.blog.request.PostWriteReq;
-import com.post_it.blog.dto.blog.response.BlogInfoRes;
-import com.post_it.blog.dto.blog.response.CategoryRes;
-import com.post_it.blog.dto.blog.response.PostRes;
+import com.post_it.blog.dto.blog.response.*;
 import com.post_it.blog.dto.common.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,7 +23,6 @@ public class BlogRepository {
                     "FROM BLOG B " +
                     "JOIN MEMBER M ON B.MEMBER_ID = M.MEMBER_ID " +
                     "WHERE B.BLOG_ID = ?";
-
             RowMapper<BlogInfoRes> rowMapper = (rs, rowNum) -> BlogInfoRes.builder()
                     .blogId(rs.getLong("BLOG_ID"))
                     .memberNickname(rs.getString("NICKNAME"))
@@ -33,8 +30,107 @@ public class BlogRepository {
                     .blogDesc(rs.getString("BLOG_DESC"))
                     .profileImg(rs.getString("PROFILE_IMG"))
                     .build();
-
             return jdbcTemplate.queryForObject(sql, rowMapper, blogId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    // [수정] 게시글 상세 조회
+    public PostDetailRes findPostDetail(Long postId) {
+        try {
+            String sql = "SELECT P.POST_ID, P.TITLE, P.CONTENT, P.LIKE_COUNT, P.CREATED_AT, " +
+                    "       C.CATEGORY_NAME, P.CATEGORY_ID, M.NICKNAME, M.MEMBER_ID " +
+                    "FROM POST P " +
+                    "JOIN CATEGORY C ON P.CATEGORY_ID = C.CATEGORY_ID " +
+                    "JOIN BLOG B ON P.BLOG_ID = B.BLOG_ID " +
+                    "JOIN MEMBER M ON B.MEMBER_ID = M.MEMBER_ID " +
+                    "WHERE P.POST_ID = ?";
+
+            RowMapper<PostDetailRes> mapper = (rs, rowNum) -> PostDetailRes.builder()
+                    .postId(rs.getLong("POST_ID"))
+                    .memberId(rs.getLong("MEMBER_ID"))
+                    .title(rs.getString("TITLE"))
+                    .content(rs.getString("CONTENT"))
+                    .likeCount(rs.getInt("LIKE_COUNT"))
+                    .createdAt(rs.getTimestamp("CREATED_AT").toLocalDateTime())
+                    .categoryName(rs.getString("CATEGORY_NAME"))
+                    .categoryId(rs.getLong("CATEGORY_ID"))
+                    .writerNickname(rs.getString("NICKNAME"))
+                    .build();
+
+            return jdbcTemplate.queryForObject(sql, mapper, postId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    // [추가] 좋아요 상태 확인
+    public boolean isLiked(Long postId, Long memberId) {
+        String sql = "SELECT COUNT(*) FROM POST_LIKE WHERE POST_ID = ? AND MEMBER_ID = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, postId, memberId);
+        return count != null && count > 0;
+    }
+
+    // [추가] 좋아요 추가
+    public void addLike(Long postId, Long memberId) {
+        String sql = "INSERT INTO POST_LIKE (POST_ID, MEMBER_ID) VALUES (?, ?)";
+        jdbcTemplate.update(sql, postId, memberId);
+        // 게시글 카운트 증가
+        jdbcTemplate.update("UPDATE POST SET LIKE_COUNT = LIKE_COUNT + 1 WHERE POST_ID = ?", postId);
+    }
+
+    // [추가] 좋아요 취소
+    public void removeLike(Long postId, Long memberId) {
+        String sql = "DELETE FROM POST_LIKE WHERE POST_ID = ? AND MEMBER_ID = ?";
+        jdbcTemplate.update(sql, postId, memberId);
+        // 게시글 카운트 감소
+        jdbcTemplate.update("UPDATE POST SET LIKE_COUNT = LIKE_COUNT - 1 WHERE POST_ID = ?", postId);
+    }
+
+    // [추가] 현재 좋아요 수 조회 (반환용)
+    public int getLikeCount(Long postId) {
+        String sql = "SELECT LIKE_COUNT FROM POST WHERE POST_ID = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, postId);
+    }
+
+    // [추가] 게시글 수정
+    public void updatePost(Long postId, PostWriteReq req) {
+        String sql = "UPDATE POST SET CATEGORY_ID = ?, TITLE = ?, CONTENT = ?, UPDATED_AT = SYSDATE WHERE POST_ID = ?";
+        jdbcTemplate.update(sql, req.getCategoryId(), req.getTitle(), req.getContent(), postId);
+    }
+
+    // [추가] 게시글 삭제
+    public void deletePost(Long postId) {
+        String sql = "DELETE FROM POST WHERE POST_ID = ?";
+        jdbcTemplate.update(sql, postId);
+    }
+
+    // --- [추가] 이전 글 조회 (같은 블로그 내에서 ID가 작은 것 중 가장 큰 것) ---
+    public PostNavRes findPrevPost(Long blogId, Long postId) {
+        try {
+            String sql = "SELECT * FROM ( " +
+                    "  SELECT POST_ID, TITLE FROM POST " +
+                    "  WHERE BLOG_ID = ? AND POST_ID < ? " +
+                    "  ORDER BY POST_ID DESC " +
+                    ") WHERE ROWNUM = 1";
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+                    new PostNavRes(rs.getLong("POST_ID"), rs.getString("TITLE")), blogId, postId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    // --- [추가] 다음 글 조회 (같은 블로그 내에서 ID가 큰 것 중 가장 작은 것) ---
+    public PostNavRes findNextPost(Long blogId, Long postId) {
+        try {
+            String sql = "SELECT * FROM ( " +
+                    "  SELECT POST_ID, TITLE FROM POST " +
+                    "  WHERE BLOG_ID = ? AND POST_ID > ? " +
+                    "  ORDER BY POST_ID ASC " +
+                    ") WHERE ROWNUM = 1";
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+                    new PostNavRes(rs.getLong("POST_ID"), rs.getString("TITLE")), blogId, postId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

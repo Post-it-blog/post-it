@@ -257,176 +257,176 @@
             </div>
         </aside>
     </div>
-    <!-- 현재 게시글 ID 저장 (JS용) -->
-    <input type="hidden" id="currentPostId" th:value="${post.postId}">
+<!-- 현재 게시글 ID 저장 (JS용) -->
+<input type="hidden" id="currentPostId" th:value="${post.postId}">
 
-    <!-- ================= 자바스크립트 (댓글, 공감, 수정/삭제 기능) ================= -->
-    <script>
-        // 1. 공감(좋아요) 토글
-        function toggleLike(postId) {
-            fetch(`/blog/post/${postId}/like`, {
-                method: 'POST'
-            })
-            .then(response => {
-                if (response.status === 401) {
-                    alert('로그인이 필요합니다.');
-                    location.href = '/mem/login';
-                    return;
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data) {
-                    const likeIcon = document.getElementById('likeIcon');
-                    const likeCountDisplay = document.getElementById('likeCountDisplay');
+<!-- ================= 자바스크립트 (댓글, 공감, 수정/삭제 기능) ================= -->
+<script>
+    // 1. 공감(좋아요) 토글
+    function toggleLike(postId) {
+        fetch(`/blog/post/${postId}/like`, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (response.status === 401) {
+                alert('로그인이 필요합니다.');
+                location.href = '/mem/login';
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data) {
+                const likeIcon = document.getElementById('likeIcon');
+                const likeCountDisplay = document.getElementById('likeCountDisplay');
 
-                    // 아이콘 색상 변경
-                    if (data.liked) {
-                        likeIcon.classList.add('liked');
-                    } else {
-                        likeIcon.classList.remove('liked');
-                    }
-                    // 숫자 업데이트 (+1 / -1)
-                    likeCountDisplay.innerText = data.count;
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // 2. 게시글 삭제
-        function deletePost(postId, blogId) {
-            if (!confirm('정말 게시글을 삭제하시겠습니까?')) return;
-            fetch(`/blog/${blogId}/post/${postId}/delete`, {
-                method: 'POST'
-            })
-            .then(res => {
-                if(res.ok) {
-                    alert('삭제되었습니다.');
-                    location.href = `/blog/${blogId}`;
+                // 아이콘 색상 변경
+                if (data.liked) {
+                    likeIcon.classList.add('liked');
                 } else {
-                    alert('삭제 실패');
+                    likeIcon.classList.remove('liked');
                 }
-            });
-        }
+                // 숫자 업데이트 (+1 / -1)
+                likeCountDisplay.innerText = data.count;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
-        // 3. 댓글/대댓글 등록
-        function submitComment(parentCommentId) {
-            const postId = document.getElementById('currentPostId').value;
-            let content;
-
-            if (parentCommentId) {
-                // 대댓글 입력값
-                content = document.getElementById('reply-input-' + parentCommentId).value;
+    // 2. 게시글 삭제
+    function deletePost(postId, blogId) {
+        if (!confirm('정말 게시글을 삭제하시겠습니까?')) return;
+        fetch(`/blog/${blogId}/post/${postId}/delete`, {
+            method: 'POST'
+        })
+        .then(res => {
+            if(res.ok) {
+                alert('삭제되었습니다.');
+                location.href = `/blog/${blogId}`;
             } else {
-                // 메인 댓글 입력값
-                content = document.getElementById('mainCommentInput').value;
+                alert('삭제 실패');
             }
+        });
+    }
 
-            if (!content || !content.trim()) {
-                alert('내용을 입력해주세요.');
-                return;
-            }
+    // 3. 댓글/대댓글 등록
+    function submitComment(parentCommentId) {
+        const postId = document.getElementById('currentPostId').value;
+        let content;
 
-            const data = {
-                postId: postId,
-                content: content,
-                parentCommentId: parentCommentId
-            };
-
-            fetch('/blog/comment/write', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (response.ok) {
-                    location.reload();
-                } else if (response.status === 401) {
-                    alert('로그인이 필요합니다.');
-                    location.href = '/mem/login';
-                } else {
-                    alert('댓글 등록 실패');
-                }
-            });
+        if (parentCommentId) {
+            // 대댓글 입력값
+            content = document.getElementById('reply-input-' + parentCommentId).value;
+        } else {
+            // 메인 댓글 입력값
+            content = document.getElementById('mainCommentInput').value;
         }
 
-        // 4. 대댓글 입력폼 열기/닫기
-        function toggleReplyForm(commentId) {
-            const formContainer = document.getElementById('reply-form-' + commentId);
+        if (!content || !content.trim()) {
+            alert('내용을 입력해주세요.');
+            return;
+        }
 
-            if (formContainer.style.display === 'block') {
-                formContainer.style.display = 'none';
-                formContainer.innerHTML = '';
-                return;
+        const data = {
+            postId: postId,
+            content: content,
+            parentCommentId: parentCommentId
+        };
+
+        fetch('/blog/comment/write', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else if (response.status === 401) {
+                alert('로그인이 필요합니다.');
+                location.href = '/mem/login';
+            } else {
+                alert('댓글 등록 실패');
             }
+        });
+    }
 
-            // 스타일이 적용된 대댓글 입력 폼 HTML
-            const formHtml = `
-                <div class="comment reply" style="padding:0; margin-bottom:20px; background:transparent; box-shadow:none;">
-                    <div class="reply-line"></div>
-                    <div style="flex:1;">
-                        <div class="comment-write" style="margin-top:0;">
-                             <div class="comment-input-area">
-                                <textarea id="reply-input-${commentId}" class="comment-input" placeholder="답글을 입력하세요"></textarea>
-                             </div>
-                             <div class="submit-area">
-                                <button class="cancel-button" onclick="toggleReplyForm(${commentId})">취소</button>
-                                <button class="submit-button" onclick="submitComment(${commentId})">등록</button>
-                             </div>
-                        </div>
+    // 4. 대댓글 입력폼 열기/닫기
+    function toggleReplyForm(commentId) {
+        const formContainer = document.getElementById('reply-form-' + commentId);
+
+        if (formContainer.style.display === 'block') {
+            formContainer.style.display = 'none';
+            formContainer.innerHTML = '';
+            return;
+        }
+
+        // 스타일이 적용된 대댓글 입력 폼 HTML
+        const formHtml = `
+            <div class="comment reply" style="padding:0; margin-bottom:20px; background:transparent; box-shadow:none;">
+                <div class="reply-line"></div>
+                <div style="flex:1;">
+                    <div class="comment-write" style="margin-top:0;">
+                         <div class="comment-input-area">
+                            <textarea id="reply-input-${commentId}" class="comment-input" placeholder="답글을 입력하세요"></textarea>
+                         </div>
+                         <div class="submit-area">
+                            <button class="cancel-button" onclick="toggleReplyForm(${commentId})">취소</button>
+                            <button class="submit-button" onclick="submitComment(${commentId})">등록</button>
+                         </div>
                     </div>
                 </div>
-            `;
-            formContainer.innerHTML = formHtml;
-            formContainer.style.display = 'block';
+            </div>
+        `;
+        formContainer.innerHTML = formHtml;
+        formContainer.style.display = 'block';
+    }
+
+    // 5. 댓글 수정 모드 활성화
+    function enableEditComment(commentId) {
+        document.getElementById('comment-text-' + commentId).style.display = 'none';
+        document.getElementById('comment-edit-' + commentId).style.display = 'block';
+    }
+
+    // 6. 댓글 수정 취소
+    function cancelEditComment(commentId) {
+        document.getElementById('comment-text-' + commentId).style.display = 'block';
+        document.getElementById('comment-edit-' + commentId).style.display = 'none';
+    }
+
+    // 7. 댓글 수정 저장
+    function updateComment(commentId) {
+        const editArea = document.getElementById('comment-edit-' + commentId);
+        const content = editArea.querySelector('textarea').value;
+
+        if(!content.trim()) {
+            alert('내용을 입력해주세요.');
+            return;
         }
 
-        // 5. 댓글 수정 모드 활성화
-        function enableEditComment(commentId) {
-            document.getElementById('comment-text-' + commentId).style.display = 'none';
-            document.getElementById('comment-edit-' + commentId).style.display = 'block';
-        }
+        fetch('/blog/comment/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ commentId: commentId, content: content })
+        }).then(res => {
+            if(res.ok) location.reload();
+            else alert('수정 실패');
+        });
+    }
 
-        // 6. 댓글 수정 취소
-        function cancelEditComment(commentId) {
-            document.getElementById('comment-text-' + commentId).style.display = 'block';
-            document.getElementById('comment-edit-' + commentId).style.display = 'none';
-        }
+    // 8. 댓글 삭제
+    function deleteComment(commentId) {
+        if (!confirm('댓글을 삭제하시겠습니까?')) return;
 
-        // 7. 댓글 수정 저장
-        function updateComment(commentId) {
-            const editArea = document.getElementById('comment-edit-' + commentId);
-            const content = editArea.querySelector('textarea').value;
+        const formData = new FormData();
+        formData.append('commentId', commentId);
 
-            if(!content.trim()) {
-                alert('내용을 입력해주세요.');
-                return;
-            }
-
-            fetch('/blog/comment/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ commentId: commentId, content: content })
-            }).then(res => {
-                if(res.ok) location.reload();
-                else alert('수정 실패');
-            });
-        }
-
-        // 8. 댓글 삭제
-        function deleteComment(commentId) {
-            if (!confirm('댓글을 삭제하시겠습니까?')) return;
-
-            const formData = new FormData();
-            formData.append('commentId', commentId);
-
-            fetch('/blog/comment/delete', {
-                method: 'POST',
-                body: formData
-            }).then(res => {
-                if(res.ok) location.reload();
-                else alert('삭제 실패');
-            });
-        }
-    </script>
+        fetch('/blog/comment/delete', {
+            method: 'POST',
+            body: formData
+        }).then(res => {
+            if(res.ok) location.reload();
+            else alert('삭제 실패');
+        });
+    }
+</script>
 </main>

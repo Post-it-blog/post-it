@@ -60,7 +60,9 @@
                 <article class="blog-post-card" th:each="post : ${postList}" th:classappend="${post.mainImageUrl == null} ? 'blog-post-no-image' : ''">
 
                     <div class="blog-post-image" th:if="${post.mainImageUrl != null}">
-                        <a th:href="@{/post/{postId}(postId=${post.postId})}" style="text-decoration: none; color: unset; display: block; width: 100%; height: 100%;">
+                        <!-- [수정] blogId 파라미터 추가 -->
+                        <a th:href="@{/blog/{blogId}/post/{postId}(blogId=${blogInfo.blogId}, postId=${post.postId})}"
+                           style="text-decoration: none; color: unset; display: block; width: 100%; height: 100%;">
                             <img
                                     th:src="${post.mainImageUrl}"
                                     th:alt="${post.title}"
@@ -69,13 +71,15 @@
                     </div>
 
                     <div class="blog-post-content">
-                        <a th:href="@{/post/{postId}(postId=${post.postId})}"
+                        <!-- [수정] blogId 파라미터 추가 -->
+                        <a th:href="@{/blog/{blogId}/post/{postId}(blogId=${blogInfo.blogId}, postId=${post.postId})}"
                            th:text="${post.title}"
                            style="text-decoration: none; color: unset; display: block; font-weight: bold; font-size: 1.2em;">
                             저희 강아지 귀엽죠?
                         </a>
 
-                        <a th:href="@{/post/{postId}(postId=${post.postId})}"
+                        <!-- [수정] blogId 파라미터 추가 -->
+                        <a th:href="@{/blog/{blogId}/post/{postId}(blogId=${blogInfo.blogId}, postId=${post.postId})}"
                            style="text-decoration: none; color: unset; display: block; margin-top: 12px;">
                             <p class="blog-post-description" th:text="${post.contentPreview}" style="margin: 0;">
                                 사실 저희 집 강아지는 아니랍니다.
@@ -182,7 +186,8 @@
 
                                 <div class="blog-recent-info">
                                     <p class="blog-recent-title">
-                                        <a th:href="@{/post/{postId}(postId=${recentPost.postId})}"
+                                        <!-- [수정] 최근 글 목록에도 blogId 파라미터 추가 -->
+                                        <a th:href="@{/blog/{blogId}/post/{postId}(blogId=${blogInfo.blogId}, postId=${recentPost.postId})}"
                                            th:text="${recentPost.title}"
                                            style="text-decoration: none; color: unset;">
                                             저희 강아지 귀엽죠?
