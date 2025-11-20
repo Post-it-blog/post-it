@@ -142,7 +142,7 @@
                             th:alt="*{memberNickname} + '님의 프로필'"
                     />
                 </div>
-                <h2 class="blog-profile-name" th:text="|*{memberNickname}님의 블로그|">그레이트킹짱규님의 블로그</h2>
+                <h2 class="blog-profile-name" th:text="*{blogTitle}">그레이트킹짱규님의 블로그</h2>
                 <p class="blog-profile-description" th:text="*{blogDesc}">블로그 소개 영역</p>
                 <th:block th:if="${isMyBlog} != null">
                     <div class="blog-action-buttons">
