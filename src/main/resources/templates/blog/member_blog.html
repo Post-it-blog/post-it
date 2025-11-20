@@ -147,7 +147,7 @@
                 <th:block th:if="${isMyBlog} != null">
                     <div class="blog-action-buttons">
                         <button class="blog-btn blog-btn-write" th:onclick="|location.href='@{/blog/{blogId}/write(blogId=${blogInfo.blogId})}'|">글쓰기</button>
-                        <button class="blog-btn blog-btn-manage">블로그 관리</button>
+                        <button class="blog-btn blog-btn-manage" th:onclick="|location.href='@{/blog/{blogId}/profile(blogId=${blogInfo.blogId})}'|">블로그 관리</button>
                     </div>
                 </th:block>
             </div>

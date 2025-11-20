@@ -5,6 +5,7 @@
             <img src="/images/logo1.png" alt="POST-IT Logo" />
         </a>
         <div class="nav-right">
+            <a th:href="@{/blog/{id}(id=${session.member.blogId})}" class="nav-item" style="color: #c7c2c2;" th:if="${session.member} != null">My Blog</a>
             <div class="nav-buttons">
                 <th:block th:if="${session.member} == null">
                     <a href="/mem/login" style="text-decoration: none;"><button class="btn-login">Login</button></a>

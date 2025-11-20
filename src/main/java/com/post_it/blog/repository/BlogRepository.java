@@ -1,5 +1,6 @@
 package com.post_it.blog.repository;
 
+import com.post_it.blog.dto.blog.request.BlogInfoUpdateReq;
 import com.post_it.blog.dto.blog.request.PostWriteReq;
 import com.post_it.blog.dto.blog.response.*;
 import com.post_it.blog.dto.common.PageInfo;
@@ -274,6 +275,51 @@ public class BlogRepository {
     public void savePostImage(Long postId, String url, String fileName) {
         String sql = "INSERT INTO POST_IMAGE (POST_ID, IMG_URL, FILE_NAME) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, postId, url, fileName);
+    }
+
+    public void updateBlogInfo(Long blogId, BlogInfoUpdateReq req) {
+        String sql = "UPDATE BLOG SET BLOG_TITLE = ?, BLOG_DESC = ? WHERE BLOG_ID = ?";
+        jdbcTemplate.update(sql, req.getBlogTitle(), req.getBlogDesc(), blogId);
+    }
+
+    // [추가] 블로그 프로필 이미지 수정
+    public void updateBlogProfileImg(Long blogId, String profileImg) {
+        String sql = "UPDATE BLOG SET PROFILE_IMG = ? WHERE BLOG_ID = ?";
+        jdbcTemplate.update(sql, profileImg, blogId);
+    }
+
+    // [추가] 카테고리 추가
+    public void addCategory(Long blogId, String categoryName) {
+        String sql = "INSERT INTO CATEGORY (BLOG_ID, CATEGORY_NAME) VALUES (?, ?)";
+        jdbcTemplate.update(sql, blogId, categoryName);
+    }
+
+    // [추가] 카테고리 수정
+    public void updateCategory(Long categoryId, String categoryName) {
+        String sql = "UPDATE CATEGORY SET CATEGORY_NAME = ? WHERE CATEGORY_ID = ?";
+        jdbcTemplate.update(sql, categoryName, categoryId);
+    }
+
+    // [추가] 카테고리 삭제
+    public void deleteCategory(Long categoryId) {
+        String sql = "DELETE FROM CATEGORY WHERE CATEGORY_ID = ?";
+        jdbcTemplate.update(sql, categoryId);
+    }
+
+    // [추가] 특정 블로그의 카테고리 개수 조회
+    public int countCategories(Long blogId) {
+        String sql = "SELECT COUNT(*) FROM CATEGORY WHERE BLOG_ID = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, blogId);
+    }
+
+    // [추가] 카테고리 ID로 블로그 ID 조회 (삭제 시 검증용)
+    public Long findBlogIdByCategoryId(Long categoryId) {
+        try {
+            String sql = "SELECT BLOG_ID FROM CATEGORY WHERE CATEGORY_ID = ?";
+            return jdbcTemplate.queryForObject(sql, Long.class, categoryId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     private RowMapper<PostRes> getPostResRowMapper() {

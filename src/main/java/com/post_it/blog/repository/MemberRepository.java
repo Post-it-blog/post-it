@@ -41,14 +41,15 @@ public class MemberRepository {
 
     public MemberRes findByUserId(String userId) {
         System.out.println(userId);
-        String sql = "select MEMBER_ID, PWD, NICKNAME, ROLE, CREATED_AT from member where ID = ?";
+        String sql = "select m.MEMBER_ID, PWD, NICKNAME, ROLE, m.CREATED_AT, BLOG_ID from member m join blog b on m.member_id = b.member_id where ID = ?";
         try {
             MemberRes memberRes = jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
                         new MemberRes(
                             rs.getLong("MEMBER_ID"),
                             rs.getNString("NICKNAME"),
                             rs.getString("ROLE"),
-                            rs.getTimestamp("CREATED_AT").toLocalDateTime()
+                            rs.getTimestamp("CREATED_AT").toLocalDateTime(),
+                            rs.getLong("BLOG_ID")
                         )
                     , userId);
             return memberRes;

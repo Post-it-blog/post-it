@@ -1,0 +1,167 @@
+<main layout:fragment="content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layout/header_only}">
+    <div class="container">
+        <!-- 제목 수정: SETTING -> 블로그 관리 -->
+        <h1 class="page-title">블로그 관리</h1>
+
+        <!-- 블로그 이름 섹션 -->
+        <div class="section">
+            <div class="field-group">
+                <label class="field-label">블로그 이름</label>
+                <input type="text" id="blogTitle" class="field-input" th:value="${blogProfile.blogTitle}" />
+            </div>
+            <div class="field-group">
+                <label class="field-label">소개글</label>
+                <textarea id="blogDesc" class="field-textarea" th:text="${blogProfile.blogDesc}"></textarea>
+            </div>
+        </div>
+
+        <!-- 블로그 프로필 이미지 섹션 -->
+        <div class="section profile-section">
+            <label class="field-label">블로그 프로필 이미지</label>
+            <div class="profile-image" id="profileImagePreview">
+                <img th:if="${blogProfile.profileImg != null}" th:src="${blogProfile.profileImg}" style="width:100%; height:100%; object-fit:cover;" />
+                <svg th:if="${blogProfile.profileImg == null}" width="200" height="208" viewBox="0 0 201 208" fill="none">
+                    <ellipse cx="100.021" cy="103.881" rx="100.021" ry="103.881" fill="#D9D9D9"/>
+                </svg>
+            </div>
+            <a href="javascript:void(0)" onclick="document.getElementById('fileInput').click()" class="profile-apply-link">이미지 변경하기</a>
+            <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="uploadProfileImage()" />
+        </div>
+
+        <!-- 카테고리 설정 섹션 -->
+        <div class="section category-section">
+            <!-- 대분류 카테고리 (헤더 역할) -->
+            <div class="category-item main-category">
+                <img src="/images/abcd.png" alt="" class="category-icon" />
+                <span class="category-text">분류 전체보기</span>
+                <button class="category-btn" onclick="addCategory()">추가</button>
+            </div>
+
+            <!-- 소분류 카테고리들 (DB 데이터) -->
+            <div class="category-item sub-category" th:each="cat : ${blogProfile.categoryList}">
+                <div class="indent-dot"></div>
+                <!-- 카테고리명 표시 -->
+                <span class="category-text" th:id="|cat-name-${cat.categoryId}|" th:text="|${cat.categoryName} (${cat.postCount})|">카테고리 (0)</span>
+
+                <button class="category-btn"
+                        th:data-id="${cat.categoryId}"
+                        th:data-name="${cat.categoryName}"
+                        onclick="updateCategory(this.getAttribute('data-id'), this.getAttribute('data-name'))">수정</button>
+
+                <button class="category-btn"
+                        th:data-id="${cat.categoryId}"
+                        onclick="deleteCategory(this.getAttribute('data-id'))">삭제</button>
+            </div>
+        </div>
+
+        <!-- 적용하기/돌아가기 버튼 섹션 (위치 이동됨) -->
+        <div class="section button-section">
+            <button class="btn btn-primary" onclick="updateBlogInfo()">적용하기</button>
+            <button class="btn btn-secondary"
+                    th:data-url="@{/blog/{id}(id=${blogProfile.blogId})}"
+                    onclick="location.href=this.getAttribute('data-url')">돌아가기</button>
+        </div>
+    </div>
+
+    <!-- 블로그 ID 저장 (JS용) -->
+    <input type="hidden" id="blogId" th:value="${blogProfile.blogId}">
+
+    <script>
+        const blogId = document.getElementById('blogId').value;
+
+        function updateBlogInfo() {
+            const title = document.getElementById('blogTitle').value;
+            const desc = document.getElementById('blogDesc').value;
+
+            fetch(`/blog/${blogId}/profile/updateInfo`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ blogTitle: title, blogDesc: desc })
+            })
+            .then(res => {
+                if (res.ok) alert('적용되었습니다.');
+                else alert('수정 실패');
+            });
+        }
+
+        function uploadProfileImage() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch(`/blog/${blogId}/profile/updateImg`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => {
+                if (res.ok) return res.text();
+                else throw new Error('업로드 실패');
+            })
+            .then(imageUrl => {
+                const previewContainer = document.getElementById('profileImagePreview');
+                previewContainer.innerHTML = `<img src="${imageUrl}" style="width:100%; height:100%; object-fit:cover;" />`;
+            })
+            .catch(err => alert('이미지 변경 실패'));
+        }
+
+        function addCategory() {
+            const currentCount = document.querySelectorAll('.sub-category').length;
+            if (currentCount >= 10) {
+                alert('카테고리는 최대 10개까지만 생성 가능합니다.');
+                return;
+            }
+
+            const name = prompt('새 카테고리 이름을 입력하세요:');
+            if (name) {
+                const formData = new FormData();
+                formData.append('categoryName', name);
+
+                fetch(`/blog/${blogId}/category/add`, { method: 'POST', body: formData })
+                .then(res => {
+                    if(res.ok) location.reload();
+                    else return res.text().then(text => alert(text));
+                });
+            }
+        }
+
+        function updateCategory(categoryId, currentName) {
+            const newName = prompt('카테고리 이름을 수정하세요:', currentName);
+            if (newName && newName !== currentName) {
+                const formData = new FormData();
+                formData.append('categoryId', categoryId);
+                formData.append('categoryName', newName);
+
+                fetch(`/blog/${blogId}/category/update`, { method: 'POST', body: formData })
+                .then(res => {
+                    if(res.ok) location.reload();
+                    else alert('수정 실패');
+                });
+            }
+        }
+
+        function deleteCategory(categoryId) {
+            const currentCount = document.querySelectorAll('.sub-category').length;
+            if (currentCount <= 1) {
+                alert('최소 1개의 카테고리는 유지해야 합니다.');
+                return;
+            }
+
+            if (confirm('정말 삭제하시겠습니까?')) {
+                const formData = new FormData();
+                formData.append('categoryId', categoryId);
+
+                fetch(`/blog/${blogId}/category/delete`, { method: 'POST', body: formData })
+                .then(res => {
+                    if(res.ok) location.reload();
+                    else return res.text().then(text => alert(text));
+                });
+            }
+        }
+    </script>
+</main>

@@ -14,4 +14,5 @@ public class MemberRes {
     private String nickname;
     private String role;
     private LocalDateTime createdAt;
+    private Long blogId;
 }

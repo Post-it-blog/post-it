@@ -1,7 +1,9 @@
 package com.post_it.blog.controller;
 
+import com.post_it.blog.dto.blog.request.BlogInfoUpdateReq;
 import com.post_it.blog.dto.blog.request.PostWriteReq;
 import com.post_it.blog.dto.blog.response.BlogHomeRes;
+import com.post_it.blog.dto.blog.response.BlogProfileRes;
 import com.post_it.blog.dto.blog.response.PostDetailRes;
 import com.post_it.blog.dto.comment.request.CommentUpdateReq;
 import com.post_it.blog.dto.comment.request.CommentWriteReq;
@@ -361,5 +363,99 @@ public class BlogController {
         safelist.addAttributes("h3", "style", "class");
 
         return Jsoup.clean(content, safelist);
+    }
+
+    // [추가] 블로그 관리 페이지
+    @GetMapping("/{blogId}/profile")
+    public String blogProfile(@PathVariable Long blogId, Model model, HttpSession session) {
+        MemberRes member = (MemberRes) session.getAttribute("member");
+        if (member == null) {
+            return "redirect:/mem/login";
+        }
+
+        if (!blogService.isMyBlog(blogId, member.getMemberId())) {
+            return "redirect:/blog/" + blogId;
+        }
+
+        BlogProfileRes blogProfile = blogService.getBlogProfile(blogId);
+        model.addAttribute("blogProfile", blogProfile);
+        model.addAttribute("pageCss", "blog_profile.css");
+
+        return "blog/blog_profile";
+    }
+
+    // [추가] 블로그 기본 정보 수정
+    @PostMapping("/{blogId}/profile/updateInfo")
+    @ResponseBody
+    public ResponseEntity<String> updateBlogInfo(
+            @PathVariable Long blogId,
+            @RequestBody BlogInfoUpdateReq req,
+            HttpSession session
+    ) {
+        MemberRes member = (MemberRes) session.getAttribute("member");
+        if (member == null || !blogService.isMyBlog(blogId, member.getMemberId())) {
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
+
+        try {
+            blogService.updateBlogInfo(blogId, req);
+            return ResponseEntity.ok("SUCCESS");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("FAIL");
+        }
+    }
+
+    // [추가] 블로그 프로필 이미지 수정
+    @PostMapping("/{blogId}/profile/updateImg")
+    @ResponseBody
+    public ResponseEntity<String> updateBlogProfileImg(
+            @PathVariable Long blogId,
+            @RequestParam("file") MultipartFile file,
+            HttpSession session
+    ) {
+        MemberRes member = (MemberRes) session.getAttribute("member");
+        if (member == null || !blogService.isMyBlog(blogId, member.getMemberId())) {
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
+
+        try {
+            String imageUrl = blogService.updateBlogProfileImg(blogId, file);
+            return ResponseEntity.ok(imageUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("FAIL");
+        }
+    }
+
+    // [추가] 카테고리 관리 (추가/수정/삭제)
+    @PostMapping("/{blogId}/category/add")
+    @ResponseBody
+    public ResponseEntity<String> addCategory(@PathVariable Long blogId, @RequestParam String categoryName) {
+        try {
+            blogService.addCategory(blogId, categoryName);
+            return ResponseEntity.ok("SUCCESS");
+        } catch (Exception e) {
+            // 10개 초과 시 에러 메시지 반환
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{blogId}/category/update")
+    @ResponseBody
+    public ResponseEntity<String> updateCategory(@RequestParam Long categoryId, @RequestParam String categoryName) {
+        blogService.updateCategory(categoryId, categoryName);
+        return ResponseEntity.ok("SUCCESS");
+    }
+
+    @PostMapping("/{blogId}/category/delete")
+    @ResponseBody
+    public ResponseEntity<String> deleteCategory(@RequestParam Long categoryId) {
+        try {
+            blogService.deleteCategory(categoryId);
+            return ResponseEntity.ok("SUCCESS");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("삭제 실패 (게시글이 있는 카테고리는 삭제할 수 없습니다.)");
+        }
     }
 }

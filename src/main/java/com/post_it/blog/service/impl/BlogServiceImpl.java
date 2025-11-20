@@ -1,10 +1,8 @@
 package com.post_it.blog.service.impl;
 
+import com.post_it.blog.dto.blog.request.BlogInfoUpdateReq;
 import com.post_it.blog.dto.blog.request.PostWriteReq;
-import com.post_it.blog.dto.blog.response.BlogHomeRes;
-import com.post_it.blog.dto.blog.response.CategoryRes;
-import com.post_it.blog.dto.blog.response.PostDetailRes;
-import com.post_it.blog.dto.blog.response.PostRes;
+import com.post_it.blog.dto.blog.response.*;
 import com.post_it.blog.dto.comment.request.CommentUpdateReq;
 import com.post_it.blog.dto.comment.request.CommentWriteReq;
 import com.post_it.blog.dto.comment.response.CommentRes;
@@ -331,5 +329,67 @@ public class BlogServiceImpl implements BlogService {
             throw new RuntimeException("권한이 없습니다.");
         }
         commentRepository.delete(commentId);
+    }
+
+    // [추가] 블로그 관리용 프로필 조회
+    @Override
+    @Transactional(readOnly = true)
+    public BlogProfileRes getBlogProfile(Long blogId) {
+        BlogInfoRes info = blogRepository.findBlogInfo(blogId);
+        if (info == null) return null;
+
+        List<CategoryRes> categories = blogRepository.findCategoriesWithCount(blogId);
+
+        return BlogProfileRes.builder()
+                .blogId(info.getBlogId())
+                .blogTitle(info.getBlogTitle())
+                .blogDesc(info.getBlogDesc())
+                .profileImg(info.getProfileImg())
+                // 닉네임은 memberNickname 필드에 담아주긴 하지만 화면엔 안 그림
+                .categoryList(categories)
+                .build();
+    }
+
+    // [추가] 블로그 정보 수정
+    @Override
+    public void updateBlogInfo(Long blogId, BlogInfoUpdateReq req) {
+        blogRepository.updateBlogInfo(blogId, req);
+    }
+
+    // [추가] 프로필 이미지 수정
+    @Override
+    public String updateBlogProfileImg(Long blogId, MultipartFile file) {
+        String imageUrl = uploadImage(file);
+        blogRepository.updateBlogProfileImg(blogId, imageUrl);
+        return imageUrl;
+    }
+
+    // [추가] 카테고리 관리
+    @Override
+    public void addCategory(Long blogId, String categoryName) {
+        int count = blogRepository.countCategories(blogId);
+        if (count >= 10) {
+            throw new RuntimeException("카테고리는 최대 10개까지만 생성 가능합니다.");
+        }
+        blogRepository.addCategory(blogId, categoryName);
+    }
+
+    @Override
+    public void updateCategory(Long categoryId, String categoryName) {
+        blogRepository.updateCategory(categoryId, categoryName);
+    }
+
+    // [수정] 카테고리 삭제 (최소 1개 유지)
+    @Override
+    public void deleteCategory(Long categoryId) {
+        // 삭제 전 블로그 ID 확인 및 개수 체크
+        Long blogId = blogRepository.findBlogIdByCategoryId(categoryId);
+        if (blogId != null) {
+            int count = blogRepository.countCategories(blogId);
+            if (count <= 1) {
+                throw new RuntimeException("최소 1개의 카테고리는 유지해야 합니다.");
+            }
+        }
+        blogRepository.deleteCategory(categoryId);
     }
 }
