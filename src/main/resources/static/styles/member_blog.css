@@ -276,13 +276,20 @@ body {
   margin-bottom: 14px;
 }
 
+/* [수정됨] 프로필 설명: 줄바꿈 허용 및 너비 조정 */
 .blog-profile-description {
   font-size: 15px;
   font-weight: 350;
   color: #636363;
   letter-spacing: -0.225px;
   margin-bottom: 25px;
-  width: 300px;
+  width: 100%; /* 기존 고정 px 제거 후 100%로 변경 */
+
+  /* 줄바꿈을 위한 속성 추가 */
+  white-space: pre-wrap;      /* 공백 유지하면서 자동 줄바꿈 */
+  word-break: break-word;     /* 긴 단어도 강제 줄바꿈 */
+  overflow-wrap: break-word;  /* 최신 표준 줄바꿈 */
+  line-height: 1.5;           /* 가독성을 위한 줄간격 */
 }
 
 /* 버튼 영역 */

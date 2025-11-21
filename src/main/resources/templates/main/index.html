@@ -53,7 +53,7 @@
                         <span class="author-nickname" th:text="${blog.memberNickname}">닉네임</span>
                     </div>
                     <h3 class="blog-item-title" th:text="${blog.blogTitle}">블로그 제목</h3>
-                    <p class="blog-item-description" th:text="${blog.blogDesc}">
+                    <p class="blog-item-description" th:text="${#strings.length(blog.blogDesc) > 60 ? #strings.substring(blog.blogDesc, 0, 60) + '...' : blog.blogDesc}">
                         블로그 소개글...
                     </p>
                 </div>
