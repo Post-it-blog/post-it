@@ -11,6 +11,7 @@ import com.post_it.blog.repository.BlogRepository;
 import com.post_it.blog.repository.CommentRepository;
 import com.post_it.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -182,13 +183,16 @@ public class BlogServiceImpl implements BlogService {
     private List<PostRes> createProcessedPostList(List<PostRes> postList) {
         return postList.stream().map(post -> {
             String content = post.getContent();
-            String plainText = content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+
+            String plainText = Jsoup.parse(content).text();
+
             String preview;
             if (plainText.length() > MAX_PREVIEW_LENGTH) {
                 preview = plainText.substring(0, MAX_PREVIEW_LENGTH) + "...";
             } else {
                 preview = plainText;
             }
+
             return PostRes.builder()
                     .postId(post.getPostId())
                     .title(post.getTitle())
