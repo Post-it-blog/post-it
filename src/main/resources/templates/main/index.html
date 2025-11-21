@@ -166,7 +166,7 @@
                                 alt="Default Image"
                         />
                     </div>
-                    <h3 class="best-post-title" th:text="${post.title}">블로그 제목</h3>
+                    <h3 class="best-post-title" th:text="${#strings.length(post.title) > 12 ? #strings.substring(post.title, 0, 12) + '...' : post.title}">블로그 제목</h3>
                     <p class="best-post-author" th:text="${post.memberNickname}">블로거 명</p>
                 </article>
             </div>
