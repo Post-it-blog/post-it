@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class BlogRepository {
-
+    // jdbc 템플릿
     private final JdbcTemplate jdbcTemplate;
 
     public BlogInfoRes findBlogInfo(Long blogId) {
